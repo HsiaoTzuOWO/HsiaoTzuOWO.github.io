@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEO_CREATOR | 賽博龐克個人形象站</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: { black: '#050505', dark: '#0a0a12', cyan: '#00f3ff', pink: '#ff003c', yellow: '#fcee0a', purple: '#b026ff', gray: '#1a1a24' }
+                    },
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        mono: ['"Share Tech Mono"', 'monospace'],
+                    },
+                    animation: {
+                        'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'grid-move': 'grid-move 1s linear infinite',
+                    },
+                    keyframes: {
+                        'grid-move': {
+                            '0%': { backgroundPosition: '0 0' },
+                            '100%': { backgroundPosition: '0 50px' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #050505;
+            color: #e0e0e0;
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            overflow-x: hidden;
+        }
+
+        .scanlines {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
+            background-size: 100% 4px; pointer-events: none; z-index: 50; opacity: 0.6;
+        }
+
+        .cyber-box {
+            position: relative;
+            background: rgba(10, 10, 18, 0.95);
+            border: 1px solid #1a1a24;
+            transition: all 0.3s ease;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%);
+        }
+        .cyber-box:hover { border-color: #00f3ff; box-shadow: 0 0 15px rgba(0, 243, 255, 0.2), inset 0 0 10px rgba(0, 243, 255, 0.05); }
+        .hover-glow-pink:hover { border-color: #ff003c; box-shadow: 0 0 15px rgba(255, 0, 60, 0.3); }
+        .hover-glow-yellow:hover { border-color: #fcee0a; box-shadow: 0 0 15px rgba(252, 238, 10, 0.3); }
+        .hover-glow-purple:hover { border-color: #b026ff; box-shadow: 0 0 15px rgba(176, 38, 255, 0.3); }
+
+        .corner-br {
+            position: absolute; bottom: 0; right: 0; width: 15px; height: 15px; background-color: #00f3ff;
+            clip-path: polygon(100% 0, 100% 100%, 0 100%);
+        }
+        
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* ====================================================================
+           排版系統：高度永遠鎖定的完美網格 (防 UI 跳動)
+           ==================================================================== */
+        .collab-grid {
+            display: grid;
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+            grid-template-rows: repeat(4, 100px); /* 強制鎖定 4 行高度 */
+            gap: 0.75rem;
+            width: 100%;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
+        
+        @media (min-width: 1024px) {
+            body:not(.force-mobile) .collab-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                grid-template-rows: repeat(4, 100px); /* 電腦版同樣鎖定 4 行高度 */
+            }
+        }
+
+        /* ====================================================================
+           佈局系統
+           ==================================================================== */
+        .layout-wrapper { display: flex; flex-direction: column; gap: 1rem; transition: max-width 0.5s ease; }
+        .layout-aside, .layout-main { display: contents; }
+        
+        /* 手機版排序 */
+        .box-intro { order: 1; }
+        .box-social { order: 2; }
+        .box-current { order: 3; }
+        .box-youtube { order: 4; }
+        .box-alliance { order: 5; }
+        .box-others { order: 6; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+
+        .intro-avatar { width: 140px; height: 140px; margin: 0 auto 1rem auto; }
+        .intro-text { text-align: center; }
+
+        /* 電腦版 Bento 佈局 */
+        @media (min-width: 1024px) {
+            body:not(.force-mobile) .layout-wrapper { flex-direction: row; align-items: flex-start; gap: 1.5rem; }
+            body:not(.force-mobile) .layout-aside { display: flex; flex-direction: column; width: 33.3333%; gap: 1.5rem; }
+            body:not(.force-mobile) .layout-main { display: grid; grid-template-columns: repeat(4, 1fr); width: 66.6667%; gap: 1rem; grid-auto-rows: min-content; }
+            
+            body:not(.force-mobile) .box-intro, body:not(.force-mobile) .box-alliance { order: 0; }
+            
+            body:not(.force-mobile) .box-youtube { grid-column: span 4; order: 1; }
+            body:not(.force-mobile) .box-social { grid-column: span 2; order: 2; }
+            body:not(.force-mobile) .box-others { grid-column: span 2; order: 3; display: flex; gap: 1rem; }
+            body:not(.force-mobile) .box-others > div { flex: 1; }
+            body:not(.force-mobile) .box-current { grid-column: span 4; order: 4; }
+
+            body:not(.force-mobile) .intro-avatar { width: 100%; height: auto; aspect-ratio: 1/1; margin: 0 0 1rem 0; }
+            body:not(.force-mobile) .intro-text { text-align: left; }
+        }
+    </style>
+</head>
+<body class="font-mono text-gray-300 min-h-screen flex flex-col relative overflow-y-auto overflow-x-hidden">
+
+    <div id="loading-screen" class="fixed inset-0 z-[1000] bg-cyber-black flex flex-col items-center justify-center transition-all duration-[800ms] ease-in-out">
+        <div class="absolute inset-0 perspective-[1000px] overflow-hidden opacity-80">
+            <div class="absolute bottom-[-30%] left-[-50%] w-[200%] h-[150%] animate-grid-move"
+                 style="background-image: linear-gradient(rgba(0,243,255,0.4) 2px, transparent 2px), linear-gradient(90deg, rgba(0,243,255,0.4) 2px, transparent 2px); background-size: 60px 60px; transform: rotateX(75deg); mask-image: linear-gradient(to top, rgba(0,0,0,1) 30%, transparent 100%); -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,1) 30%, transparent 100%);">
+            </div>
+        </div>
+        <div class="relative z-10 flex flex-col items-center">
+            <div class="text-cyber-cyan font-orbitron text-4xl font-bold tracking-[0.3em] mb-6 animate-pulse">NEO_OS</div>
+            <div class="w-64 h-[2px] bg-cyber-gray overflow-hidden">
+                <div id="loading-bar" class="h-full bg-cyber-cyan w-0 transition-all duration-[2000ms] ease-out shadow-[0_0_15px_#00f3ff]"></div>
+            </div>
+            <div class="mt-4 text-[10px] font-mono text-cyber-cyan/80 tracking-widest">CONNECTING TO NETWORK...</div>
+        </div>
+    </div>
+
+    <div class="scanlines"></div>
+
+    <div class="fixed bottom-6 left-6 z-50 flex bg-cyber-dark/95 border border-cyber-cyan/50 p-1 rounded backdrop-blur-sm shadow-lg shadow-cyber-cyan/10">
+        <button id="btn-desktop" class="w-8 h-8 flex items-center justify-center text-cyber-cyan bg-cyber-cyan/20 transition-all" title="電腦版預覽">
+            <i class="fa-solid fa-desktop text-sm"></i>
+        </button>
+        <button id="btn-mobile" class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-cyber-cyan transition-all" title="手機版預覽">
+            <i class="fa-solid fa-mobile-screen text-sm"></i>
+        </button>
+    </div>
+
+    <header class="w-full p-6 flex justify-between items-center border-b border-cyber-gray bg-cyber-dark/90 relative z-10">
+        <div class="flex items-center gap-2">
+            <div class="w-3 h-3 bg-cyber-cyan animate-pulse-fast"></div>
+            <span class="font-orbitron font-bold text-cyber-cyan tracking-widest">SYS.CONNECT</span>
+        </div>
+        <div class="text-xs text-cyber-gray-400 font-orbitron">[ STATUS: <span class="text-cyber-yellow">ONLINE</span> ]</div>
+    </header>
+
+    <div id="app-wrapper" class="w-full max-w-7xl mx-auto p-4 md:p-8 relative z-10 opacity-0 transition-opacity duration-700 mx-auto">
+        <main class="layout-wrapper">
+            
+            <aside class="layout-aside">
+                <div class="cyber-box p-1 box-intro">
+                    <div class="relative overflow-hidden border-b border-cyber-cyan intro-avatar transition-all duration-300">
+                        <img src="https://placehold.co/600x600/0a0a12/00f3ff?text=AVATAR_IMG" alt="Profile" class="w-full h-full object-cover filter contrast-125 saturate-50 hover:saturate-150 transition duration-500">
+                        <div class="absolute bottom-2 right-2 bg-cyber-cyan text-cyber-black text-[10px] font-bold px-2 py-0.5 font-orbitron hidden lg:block">LVL 99</div>
+                    </div>
+                    
+                    <div class="p-4 intro-text">
+                        <h1 class="font-orbitron font-black text-2xl lg:text-3xl text-white mb-1">Kael.Cyber</h1>
+                        <h2 class="text-cyber-pink text-xs lg:text-sm tracking-[0.2em] mb-4 font-bold border-b border-cyber-gray pb-2 inline-block lg:block">
+                            > CREATOR / ENGR
+                        </h2>
+                        
+                        <p class="text-xs leading-relaxed text-gray-400 mb-6 max-w-xs mx-auto lg:max-w-none">
+                            你好，我是 Kael。專注於數位邊界的探索者，擅長將前衛概念轉化為現實代碼與視覺。<br>
+                            <span class="text-cyber-yellow text-[10px] mt-2 block">// Evolve or Die.</span>
+                        </p>
+
+                        <a href="mailto:HsiaoTzuOWO@gmail.com" class="block w-full text-center bg-transparent border border-cyber-cyan text-cyber-cyan hover:bg-cyber-cyan hover:text-cyber-black transition-all duration-300 font-orbitron font-bold py-2 uppercase tracking-wider relative group overflow-hidden">
+                            <span class="relative z-10 flex flex-col items-center justify-center">
+                                <span class="text-sm">CONTACT_ME</span>
+                                <span class="text-[9px] opacity-80 font-mono tracking-normal mt-0.5"><i class="fa-solid fa-envelope mr-1"></i>HsiaoTzuOWO@gmail.com</span>
+                            </span>
+                        </a>
+                    </div>
+                    <div class="corner-br"></div>
+                </div>
+
+                <div class="cyber-box box-alliance hover-glow-cyan p-4 flex flex-col group relative overflow-hidden aspect-square">
+                    <div class="text-cyber-cyan font-orbitron text-xs flex items-center justify-between border-b border-cyber-cyan/30 pb-2 mb-3 z-10 relative">
+                        <span>ALLIANCE_NET</span>
+                        <span class="font-mono text-[10px] opacity-80">聯盟夥伴</span>
+                    </div>
+                    <div id="alliance-slider" class="flex-1 w-full overflow-hidden relative z-0 rounded border border-cyber-gray bg-cyber-black">
+                        <!-- 圖片動態注入輪播 -->
+                    </div>
+                    <div class="corner-br"></div>
+                </div>
+            </aside>
+
+            <section class="layout-main">
+                
+                <div id="yt-carousel-wrapper" class="cyber-box box-youtube hover-glow-cyan p-4 flex flex-col group overflow-hidden min-h-[280px]">
+                    <div class="text-cyber-cyan font-orbitron text-xs flex items-center justify-between border-b border-cyber-cyan/30 pb-2 mb-3">
+                        <span class="flex items-center gap-2"><i class="fa-brands fa-youtube text-red-500 text-sm"></i> LATEST_TRANSMISSIONS</span>
+                        <span id="yt-status" class="text-cyber-yellow text-[9px] animate-pulse">FETCHING...</span>
+                    </div>
+                    
+                    <div class="relative w-full flex-grow flex items-center mt-2">
+                        <button onclick="scrollCarousel(-1)" class="absolute left-0 z-20 w-8 h-8 bg-black/80 border border-cyber-cyan text-cyber-cyan hover:bg-cyber-cyan hover:text-black transition-colors shadow-[0_0_10px_#050505]"><i class="fa-solid fa-chevron-left"></i></button>
+                        
+                        <div id="yt-carousel" class="flex w-full overflow-x-auto snap-x snap-mandatory scrollbar-hide scroll-smooth items-center px-10 gap-4 h-[200px]">
+                        </div>
+
+                        <button onclick="scrollCarousel(1)" class="absolute right-0 z-20 w-8 h-8 bg-black/80 border border-cyber-cyan text-cyber-cyan hover:bg-cyber-cyan hover:text-black transition-colors shadow-[0_0_10px_#050505]"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                    <div class="corner-br"></div>
+                </div>
+
+                <div class="cyber-box box-social hover-glow-purple p-4 flex flex-col justify-center group h-32">
+                    <div class="text-cyber-purple font-orbitron text-xs flex items-center justify-between border-b border-cyber-purple/30 pb-2 mb-3">
+                        <span>SOCIAL_NET</span>
+                    </div>
+                    <div class="flex flex-row gap-4 items-center justify-center h-full">
+                        <a href="https://www.youtube.com/@HsiaoTzuOWO" target="_blank" class="w-12 h-12 flex items-center justify-center rounded-full border border-cyber-gray hover:border-cyber-purple hover:text-cyber-purple transition-all text-xl bg-cyber-dark hover:scale-110"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="#" target="_blank" class="w-12 h-12 flex items-center justify-center rounded-full border border-cyber-gray hover:border-cyber-purple hover:text-cyber-purple transition-all text-xl bg-cyber-dark hover:scale-110"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" target="_blank" class="w-12 h-12 flex items-center justify-center rounded-full border border-cyber-gray hover:border-cyber-purple hover:text-cyber-purple transition-all text-xl bg-cyber-dark hover:scale-110"><i class="fa-brands fa-tiktok"></i></a>
+                    </div>
+                    <div class="corner-br" style="background-color: #b026ff;"></div>
+                </div>
+
+                <div class="box-others">
+                    <div class="cyber-box hover-glow-pink p-4 flex flex-col items-center justify-center text-center group cursor-pointer h-32">
+                        <i class="fa-solid fa-compact-disc text-2xl text-cyber-pink mb-2 group-hover:animate-spin"></i>
+                        <span class="font-orbitron text-[10px] text-white">BGM_UPLINK</span>
+                        <div class="corner-br" style="background-color: #ff003c;"></div>
+                    </div>
+                    <div class="cyber-box hover-glow-cyan p-4 flex flex-col justify-between group cursor-pointer h-32">
+                        <div class="text-cyber-cyan font-orbitron text-xs flex justify-between items-center">
+                            <span>ARCHIVE</span> <i class="fa-solid fa-folder-tree"></i>
+                        </div>
+                        <div class="text-[11px] text-white font-bold group-hover:pl-2 transition-all flex flex-col">
+                            <span>> Read Logs</span>
+                        </div>
+                        <div class="corner-br"></div>
+                    </div>
+                </div>
+
+                <div class="cyber-box box-current hover-glow-yellow p-4 lg:p-6 flex flex-col group relative min-h-min">
+                    <div class="mb-4">
+                        <div class="text-cyber-yellow font-orbitron text-sm flex flex-col gap-1 mb-4">
+                            <div class="flex items-center gap-2 border-b border-cyber-yellow/30 pb-2">
+                                <i class="fa-solid fa-bolt"></i> CO-OP & SPONSOR
+                            </div>
+                        </div>
+                        
+                        <div id="current-nav-group" class="relative group/nav flex items-center bg-cyber-black p-2 border border-cyber-gray rounded">
+                            <button onclick="changePage('current', -1)" class="absolute -left-3 z-20 w-8 h-10 bg-cyber-black border border-cyber-yellow text-cyber-yellow flex items-center justify-center hover:bg-cyber-yellow hover:text-black transition-colors shadow-[0_0_10px_#050505]">
+                                <i class="fa-solid fa-chevron-left text-xs"></i>
+                            </button>
+                            
+                            <div id="current-collab-content" class="collab-grid px-2 lg:px-4"></div>
+                            
+                            <button onclick="changePage('current', 1)" class="absolute -right-3 z-20 w-8 h-10 bg-cyber-black border border-cyber-yellow text-cyber-yellow flex items-center justify-center hover:bg-cyber-yellow hover:text-black transition-colors shadow-[0_0_10px_#050505]">
+                                <i class="fa-solid fa-chevron-right text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <details class="group/details border border-cyber-gray/50 bg-cyber-dark/80 mt-2 open:bg-cyber-dark transition-all duration-300">
+                        <summary class="p-3 text-cyber-yellow font-orbitron text-xs flex justify-between items-center hover:bg-cyber-gray/30 transition cursor-pointer select-none">
+                            <span class="flex items-center gap-2"><i class="fa-solid fa-box-archive"></i> PAST_ARCHIVES</span>
+                            <i class="fa-solid fa-chevron-down transition-transform duration-300 group-open/details:rotate-180"></i>
+                        </summary>
+                        <div class="p-3 border-t border-cyber-gray/50 cursor-default bg-cyber-black">
+                            <div class="flex items-center justify-between mb-3">
+                                <div id="collab-tabs" class="flex gap-2 overflow-x-auto scrollbar-hide"></div>
+                            </div>
+                            
+                            <div id="past-nav-group" class="relative group/nav flex items-center border border-cyber-gray p-2">
+                                <button onclick="changePage('past', -1)" class="absolute -left-3 z-20 w-8 h-10 bg-cyber-black border border-cyber-yellow text-cyber-yellow flex items-center justify-center hover:bg-cyber-yellow hover:text-black transition-colors shadow-[0_0_10px_#050505]">
+                                    <i class="fa-solid fa-chevron-left text-xs"></i>
+                                </button>
+                                
+                                <div id="past-collab-content" class="collab-grid px-2 lg:px-4"></div>
+                                
+                                <button onclick="changePage('past', 1)" class="absolute -right-3 z-20 w-8 h-10 bg-cyber-black border border-cyber-yellow text-cyber-yellow flex items-center justify-center hover:bg-cyber-yellow hover:text-black transition-colors shadow-[0_0_10px_#050505]">
+                                    <i class="fa-solid fa-chevron-right text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </details>
+                    <div class="corner-br" style="background-color: #fcee0a;"></div>
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+    <footer class="w-full text-center py-6 text-[10px] text-cyber-gray-400 font-mono relative z-10 mt-auto border-t border-cyber-gray bg-cyber-black">
+        <p>© 2077 NEO_CREATOR. ALL RIGHTS RESERVED.</p>
+    </footer>
+
+    <script>
+        /* ================= 1. 載入動畫邏輯 ================= */
+        window.onload = () => {
+            const bar = document.getElementById('loading-bar');
+            setTimeout(() => { bar.style.width = '100%'; }, 100);
+
+            setTimeout(() => {
+                const screen = document.getElementById('loading-screen');
+                const app = document.getElementById('app-wrapper');
+                
+                screen.style.transform = 'scale(1.5)';
+                screen.style.opacity = '0';
+                screen.style.pointerEvents = 'none';
+                
+                app.style.opacity = '1';
+                setTimeout(() => { screen.remove(); }, 800);
+            }, 2100);
+        };
+
+        /* ================= 2. 設備切換邏輯 (左下角按鈕) ================= */
+        const btnMobile = document.getElementById('btn-mobile');
+        const btnDesktop = document.getElementById('btn-desktop');
+        const appWrapper = document.getElementById('app-wrapper');
+
+        btnMobile.onclick = () => {
+            document.body.classList.add('force-mobile');
+            appWrapper.classList.add('max-w-[420px]');
+            btnMobile.classList.replace('text-gray-500', 'text-cyber-cyan');
+            btnMobile.classList.add('bg-cyber-cyan/20');
+            btnDesktop.classList.replace('text-cyber-cyan', 'text-gray-500');
+            btnDesktop.classList.remove('bg-cyber-cyan/20');
+            
+            pageState.current = 1; pageState.past = 1;
+            animateGridLoad('current', () => loadGridContent('current'));
+            animateGridLoad('past', () => loadGridContent('past'));
+        };
+
+        btnDesktop.onclick = () => {
+            document.body.classList.remove('force-mobile');
+            appWrapper.classList.remove('max-w-[420px]');
+            btnDesktop.classList.replace('text-gray-500', 'text-cyber-cyan');
+            btnDesktop.classList.add('bg-cyber-cyan/20');
+            btnMobile.classList.replace('text-cyber-cyan', 'text-gray-500');
+            btnMobile.classList.remove('bg-cyber-cyan/20');
+            
+            pageState.current = 1; pageState.past = 1;
+            animateGridLoad('current', () => loadGridContent('current'));
+            animateGridLoad('past', () => loadGridContent('past'));
+        };
+
+        /* ================= 3. 優惠碼複製功能 ================= */
+        function copyToClipboard(text, event) {
+            if(event) { event.preventDefault(); event.stopPropagation(); }
+            navigator.clipboard.writeText(text).then(() => {
+                const notice = document.createElement('div');
+                notice.innerText = 'COPIED: ' + text;
+                notice.className = 'fixed bottom-20 left-1/2 -translate-x-1/2 bg-cyber-yellow text-cyber-black font-orbitron font-bold px-4 py-2 z-50 animate-pulse rounded shadow-lg shadow-cyber-yellow/50';
+                document.body.appendChild(notice);
+                setTimeout(() => notice.remove(), 1500);
+            });
+        }
+
+        /* ================= 4. 合作卡片渲染 (動態適應 4筆/8筆) ================= */
+        function getItemsPerPage() {
+            return document.body.classList.contains('force-mobile') || window.innerWidth < 1024 ? 4 : 8;
+        }
+
+        const pageState = { current: 1, past: 1 };
+        let currentPastYear = "2025";
+
+        const collabData = {
+            "2026": [
+                { type: "SPONSOR", name: "NeoVision AR 隱形眼鏡", desc: "專屬限定色，視野清晰度升級。", image: "https://placehold.co/400x400/1a1a24/00f3ff?text=AR+LENS", promoCode: "NEO_26", link: "#" },
+                { type: "GEAR", name: "CyberDeck 鍵盤", desc: "超低延遲機械軸體，電競首選。", image: "https://placehold.co/400x400/1a1a24/fcee0a?text=KEYBOARD", promoCode: "KAEL2077", link: "#" },
+                { type: "SOFTWARE", name: "Glitch 剪輯外掛", desc: "終身訂閱 8 折優惠", image: "https://placehold.co/400x400/1a1a24/ff003c?text=SOFTWARE", promoCode: null, link: "#" },
+                { type: "SPONSOR", name: "能量飲料", desc: "保持專注 12 小時", image: "https://placehold.co/400x400/1a1a24/b026ff?text=DRINK", promoCode: "ENERGY_UP", link: "#" },
+                { type: "GEAR", name: "賽博電競耳機", desc: "7.1 環繞音效", image: "https://placehold.co/400x400/1a1a24/ffffff?text=HEADSET", promoCode: "AUDIO_26", link: "#" },
+                { type: "PRODUCT", name: "發光外套 V3", desc: "內建霓虹燈條，防潑水設計。", image: "https://placehold.co/400x400/1a1a24/00f3ff?text=JACKET", promoCode: null, link: "#" },
+                { type: "SOFTWARE", name: "AI 繪圖助手 Pro", desc: "解鎖無限生成次數", image: "https://placehold.co/400x400/1a1a24/ff003c?text=AI+PRO", promoCode: "AI_KAEL", link: "#" },
+                { type: "SPONSOR", name: "網路安全 VPN", desc: "首年訂閱 5 折", image: "https://placehold.co/400x400/1a1a24/fcee0a?text=VPN", promoCode: "KAELVPN", link: "#" },
+                { type: "GEAR", name: "測試用單獨一頁商品", desc: "此商品會在第二頁單獨出現，排版將保持不變。", image: "https://placehold.co/400x400/1a1a24/ffffff?text=PAGE_2", promoCode: null, link: "#" }
+            ],
+            "2025": [
+                { type: "PRODUCT", name: "Quest 3 MR 挑戰", image: "https://placehold.co/400x400/1a1a24/00f3ff?text=QUEST3", desc: "實測 MR 技術在生活中的應用。", promoCode: null, link: "#" },
+                { type: "GEAR", name: "限定滑鼠墊", image: "https://placehold.co/400x400/1a1a24/ff003c?text=MOUSEPAD", desc: "絕版聯名周邊。", promoCode: "PAST_25", link: "#" }
+            ],
+            "2024": [
+                { type: "GEAR", name: "聯名機械鍵盤", image: "https://placehold.co/400x400/1a1a24/fcee0a?text=KEYBOARD", desc: "專屬限定配色，帶來極致敲擊手感。", promoCode: "KAEL2077", link: "#" },
+                { type: "SOFTWARE", name: "Neon Video Editor", image: "https://placehold.co/400x400/1a1a24/00f3ff?text=SOFTWARE", desc: "剪輯軟體終身版授權。", promoCode: "OWO_EDIT", link: "#" }
+            ],
+            "2023": [
+                { type: "PRODUCT", name: "VR 社死挑戰 - Quest 3", image: "https://placehold.co/400x400/1a1a24/ff003c?text=QUEST+3", desc: "戴VR上街！賽博瘋子的一天", promoCode: null, link: "#" }
+            ]
+        };
+
+        function renderCollabTabs() {
+            const tabs = document.getElementById('collab-tabs');
+            tabs.innerHTML = '';
+            const years = Object.keys(collabData).filter(y => y !== "2026").sort((a,b) => b-a);
+            
+            years.forEach(year => {
+                const btn = document.createElement('button');
+                btn.className = `px-3 py-1 text-[11px] font-orbitron border transition-colors ${year === currentPastYear ? 'bg-cyber-yellow text-cyber-black border-cyber-yellow' : 'bg-transparent text-gray-400 border-cyber-gray hover:text-cyber-yellow'}`;
+                btn.innerText = year;
+                btn.onclick = (e) => { 
+                    e.preventDefault(); 
+                    if (currentPastYear === year) return;
+                    currentPastYear = year; 
+                    pageState.past = 1; 
+                    renderCollabTabs(); 
+                    animateGridLoad('past', () => loadGridContent('past')); 
+                };
+                tabs.appendChild(btn);
+            });
+        }
+
+        function createCollabCard(item) {
+            const promoHTML = item.promoCode ? `
+                <div class="mt-auto flex-shrink-0 flex items-center justify-between bg-cyber-dark border border-cyber-yellow/40 pl-2 pr-1 py-0.5 rounded-sm">
+                    <span class="font-mono text-[9px] font-bold text-cyber-yellow">CODE: ${item.promoCode}</span>
+                    <button onclick="copyToClipboard('${item.promoCode}', event)" class="text-cyber-yellow hover:text-white p-1 border-l border-cyber-yellow/40 pl-2"><i class="fa-regular fa-clone text-[10px]"></i></button>
+                </div>
+            ` : '';
+
+            const card = document.createElement('a');
+            card.href = item.link;
+            card.className = "flex flex-row bg-cyber-gray/20 border border-cyber-gray/60 hover:border-cyber-cyan transition h-[100px] group overflow-hidden w-full";
+            card.innerHTML = `
+                <div class="w-[100px] flex-shrink-0 relative border-r border-cyber-gray/60 bg-cyber-black overflow-hidden">
+                    <img src="${item.image}" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition duration-500">
+                    <div class="absolute top-0 left-0 bg-cyber-dark/90 px-1 py-0.5 text-[7px] text-cyber-cyan border-b border-r border-cyber-cyan/50 font-orbitron">${item.type}</div>
+                </div>
+                <div class="p-2.5 flex flex-col flex-1 min-w-0">
+                    <h4 class="text-white font-bold text-xs truncate group-hover:text-cyber-cyan mb-1">${item.name}</h4>
+                    <p class="text-[9px] text-gray-400 line-clamp-2 leading-relaxed flex-shrink-0 mb-1">${item.desc}</p>
+                    ${promoHTML}
+                </div>
+            `;
+            return card;
+        }
+
+        // 修改：使用完全透明的隱形卡片來佔位，確保沒有虛線框或閃爍，但完美撐起空間
+        function createEmptySlotCard() {
+            const card = document.createElement('div');
+            card.className = "h-[100px] w-full opacity-0 pointer-events-none"; 
+            return card;
+        }
+
+        // 修改：提升轉場的絲滑感（稍微下沉並淡出，然後回彈淡入）
+        function animateGridLoad(section, updateLogic) {
+            const container = document.getElementById(`${section}-collab-content`);
+            container.style.opacity = '0';
+            container.style.transform = 'translateY(8px)';
+            
+            setTimeout(() => {
+                updateLogic();
+                container.style.opacity = '1';
+                container.style.transform = 'translateY(0)';
+            }, 450); // 增加動畫等待時間讓肉眼覺得更滑順
+        }
+
+        function loadGridContent(section) {
+            const isCurrent = section === 'current';
+            const year = isCurrent ? "2026" : currentPastYear;
+            const items = collabData[year] || [];
+            
+            const container = document.getElementById(`${section}-collab-content`);
+            container.innerHTML = '';
+            
+            const limit = getItemsPerPage();
+            const totalPages = Math.ceil(items.length / limit) || 1;
+            
+            if (pageState[section] > totalPages) pageState[section] = 1;
+
+            const start = (pageState[section] - 1) * limit;
+            const pageItems = items.slice(start, start + limit);
+            
+            // 就算該頁只有 1 個商品，迴圈依舊會補足透明的空位，保證高度不塌陷
+            for (let i = 0; i < limit; i++) {
+                if (pageItems[i]) {
+                    container.appendChild(createCollabCard(pageItems[i]));
+                } else {
+                    container.appendChild(createEmptySlotCard());
+                }
+            }
+        }
+
+        function changePage(section, delta, isAuto = false) {
+            animateGridLoad(section, () => {
+                const year = section === 'current' ? '2026' : currentPastYear;
+                const limit = getItemsPerPage();
+                const maxPage = Math.ceil((collabData[year]?.length || 0) / limit) || 1;
+                
+                pageState[section] += delta;
+                
+                if (isAuto) {
+                    if (pageState[section] > maxPage) pageState[section] = 1;
+                    if (pageState[section] < 1) pageState[section] = maxPage;
+                } else {
+                    if (pageState[section] < 1) pageState[section] = 1;
+                    if (pageState[section] > maxPage) pageState[section] = maxPage;
+                }
+                
+                loadGridContent(section);
+            });
+        }
+
+        /* ================= 5. YouTube 輪播 ================= */
+        const carousel = document.getElementById('yt-carousel');
+        function scrollCarousel(direction) {
+            carousel.scrollBy({ left: direction * (carousel.clientWidth * 0.7), behavior: 'smooth' });
+        }
+
+        function loadYouTube() {
+            const mockVideos = [
+                { title: "【桌搭#1】萬元內的夢想桌搭改造", thumbnail: "https://placehold.co/1920x1080/0a0a12/00f3ff?text=YOUTUBE+16:9", link: "#", pubDate: "2024-05-12", isShorts: false },
+                { title: "這款鍵盤的手感太神了！ #Shorts", thumbnail: "https://placehold.co/1080x1920/1a1a24/ff003c?text=SHORTS", link: "#", pubDate: "2024-05-08", isShorts: true },
+                { title: "賽博龐克一日挑戰 #Shorts", thumbnail: "https://placehold.co/1080x1920/0a0a12/fcee0a?text=SHORTS+2", link: "#", pubDate: "2024-04-20", isShorts: true },
+                { title: "年度愛用軟體大公開", thumbnail: "https://placehold.co/1920x1080/1a1a24/b026ff?text=YOUTUBE+16:9", link: "#", pubDate: "2024-03-15", isShorts: false }
+            ];
+            
+            mockVideos.forEach(video => {
+                const card = document.createElement('a');
+                card.href = video.link; card.target = "_blank";
+                card.className = "h-full flex-shrink-0 snap-center relative block group border border-cyber-gray hover:border-cyber-cyan transition-all overflow-hidden";
+                card.style.aspectRatio = video.isShorts ? '9/16' : '16/9';
+                card.innerHTML = `
+                    <img src="${video.thumbnail}" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition duration-500">
+                    <div class="absolute bottom-0 left-0 w-full p-2 bg-gradient-to-t from-black to-transparent pointer-events-none">
+                        <div class="text-[8px] text-cyber-cyan font-mono bg-black/50 inline-block px-1 mb-1">${video.pubDate}</div>
+                        <h3 class="font-orbitron font-bold text-[10px] text-white group-hover:text-cyber-cyan line-clamp-2 leading-tight">${video.title}</h3>
+                    </div>
+                `;
+                carousel.appendChild(card);
+            });
+            document.getElementById('yt-status').innerText = 'SYNC_COMPLETE';
+            document.getElementById('yt-status').classList.replace('text-cyber-yellow', 'text-cyber-cyan');
+        }
+
+        /* ================= 6. 聯盟夥伴 2x2 動態輪播 ================= */
+        const allianceBrands = [
+            "https://placehold.co/150x150/050505/ff003c?text=ARASAKA", "https://placehold.co/150x150/050505/00f3ff?text=MILITECH",
+            "https://placehold.co/150x150/050505/fcee0a?text=KIROSHI", "https://placehold.co/150x150/050505/b026ff?text=KANG",
+            "https://placehold.co/150x150/050505/00f3ff?text=TRAUMA",  "https://placehold.co/150x150/050505/ff003c?text=MAXTAC",
+            "https://placehold.co/150x150/050505/fcee0a?text=ZEISS",   "https://placehold.co/150x150/050505/ffffff?text=NETWCH"
+        ];
+
+        function initAllianceSlider() {
+            const slider = document.getElementById('alliance-slider');
+            const sliderInner = document.createElement('div');
+            sliderInner.className = 'flex w-full h-full transition-transform duration-[1200ms] ease-in-out'; // 增加滑動的絲滑感
+            
+            const pagesCount = Math.ceil(allianceBrands.length / 4);
+            
+            for(let i = 0; i < pagesCount; i++) {
+                const pageData = allianceBrands.slice(i * 4, (i + 1) * 4);
+                const pageDiv = document.createElement('div');
+                pageDiv.className = 'w-full h-full flex-shrink-0 grid grid-cols-2 grid-rows-2 gap-[1px] bg-cyber-gray';
+                
+                pageData.forEach(img => {
+                    const imgDiv = document.createElement('div');
+                    imgDiv.className = 'bg-cyber-black flex items-center justify-center p-4 relative group/brand overflow-hidden pointer-events-none';
+                    imgDiv.innerHTML = `<img src="${img}" class="w-full h-full object-contain filter grayscale opacity-50 group-hover/brand:grayscale-0 group-hover/brand:opacity-100 group-hover/brand:scale-110 transition duration-500">`;
+                    pageDiv.appendChild(imgDiv);
+                });
+                sliderInner.appendChild(pageDiv);
+            }
+            slider.appendChild(sliderInner);
+
+            let currentBrandPage = 0;
+            setInterval(() => {
+                if (!slider.matches(':hover')) {
+                    currentBrandPage = (currentBrandPage + 1) % pagesCount;
+                    sliderInner.style.transform = `translateX(-${currentBrandPage * 100}%)`;
+                }
+            }, 5000); // 更改為 5 秒切換
+        }
+
+        /* ================= 7. 全區塊自動輪播與防干擾邏輯 ================= */
+        function initGlobalAutoPlay() {
+            const INTERVAL_TIME = 8000; // 合作區塊維持 8000 毫秒 (8秒)
+            const YT_INTERVAL_TIME = 5000; // YouTube 專屬 5000 毫秒 (5秒)
+
+            // YouTube 自動輪播
+            const ytWrapper = document.getElementById('yt-carousel-wrapper');
+            let ytTimer;
+            const startYt = () => {
+                clearInterval(ytTimer);
+                ytTimer = setInterval(() => {
+                    if (carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 10) {
+                        carousel.scrollTo({ left: 0, behavior: 'smooth' });
+                    } else {
+                        scrollCarousel(1);
+                    }
+                }, YT_INTERVAL_TIME);
+            };
+            const stopYt = () => clearInterval(ytTimer);
+            ytWrapper.addEventListener('mouseenter', stopYt);
+            ytWrapper.addEventListener('mouseleave', startYt);
+            ytWrapper.addEventListener('touchstart', stopYt, {passive: true});
+            ytWrapper.addEventListener('touchend', startYt, {passive: true});
+            startYt();
+
+            // 目前合作內容 (Current) 自動輪播
+            const currentNav = document.getElementById('current-nav-group');
+            let currentTimer;
+            const startCurrent = () => { clearInterval(currentTimer); currentTimer = setInterval(() => changePage('current', 1, true), INTERVAL_TIME); };
+            const stopCurrent = () => clearInterval(currentTimer);
+            currentNav.addEventListener('mouseenter', stopCurrent);
+            currentNav.addEventListener('mouseleave', startCurrent);
+            currentNav.addEventListener('touchstart', stopCurrent, {passive: true});
+            currentNav.addEventListener('touchend', startCurrent, {passive: true});
+            startCurrent();
+
+            // 往期合作 (Past) 自動輪播
+            const pastNav = document.getElementById('past-nav-group');
+            let pastTimer;
+            const startPast = () => { clearInterval(pastTimer); pastTimer = setInterval(() => changePage('past', 1, true), INTERVAL_TIME); };
+            const stopPast = () => clearInterval(pastTimer);
+            pastNav.addEventListener('mouseenter', stopPast);
+            pastNav.addEventListener('mouseleave', startPast);
+            pastNav.addEventListener('touchstart', stopPast, {passive: true});
+            pastNav.addEventListener('touchend', startPast, {passive: true});
+            startPast();
+        }
+
+        window.addEventListener('resize', () => {
+            loadGridContent('current');
+            loadGridContent('past');
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCollabTabs();
+            loadGridContent('current');
+            loadGridContent('past');
+            loadYouTube();
+            initAllianceSlider();
+            initGlobalAutoPlay();
+        });
+    </script>
+</body>
+</html>
