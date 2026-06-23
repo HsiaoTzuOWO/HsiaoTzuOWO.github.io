@@ -54,7 +54,7 @@
         .cyber-box {
             position: relative;
             background: rgba(10, 10, 18, 0.95);
-            border: 1px solid #1a1a24;
+            border: 1px solid #2a2a35; 
             transition: all 0.3s ease;
             clip-path: polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%);
         }
@@ -72,13 +72,13 @@
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
         /* ====================================================================
-           排版系統：高度永遠鎖定的完美網格 (防 UI 跳動)
+           排版系統：合作內容區塊高度設定 (加高至 120px 以容納更大的字體)
            ==================================================================== */
         .collab-grid {
             display: grid;
             grid-template-columns: repeat(1, minmax(0, 1fr));
-            grid-template-rows: repeat(4, 100px); /* 強制鎖定 4 行高度 */
-            gap: 0.75rem;
+            grid-template-rows: repeat(4, 120px);
+            gap: 1rem;
             width: 100%;
             transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
         }
@@ -86,48 +86,46 @@
         @media (min-width: 1024px) {
             body:not(.force-mobile) .collab-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
-                grid-template-rows: repeat(4, 100px); /* 電腦版同樣鎖定 4 行高度 */
+                grid-template-rows: repeat(4, 120px);
             }
         }
 
         /* ====================================================================
            佈局系統
            ==================================================================== */
-        .layout-wrapper { display: flex; flex-direction: column; gap: 1rem; transition: max-width 0.5s ease; }
+        .layout-wrapper { display: flex; flex-direction: column; gap: 1.25rem; transition: max-width 0.5s ease; }
         .layout-aside, .layout-main { display: contents; }
         
-        /* 手機版排序 (將原本的 box-social 更名為 box-comms 防擋) */
         .box-intro { order: 1; }
         .box-comms { order: 2; }
         .box-current { order: 3; }
         .box-youtube { order: 4; }
         .box-alliance { order: 5; }
-        .box-others { order: 6; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+        .box-others { order: 6; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
 
         .intro-avatar { width: 140px; height: 140px; margin: 0 auto 1rem auto; }
         .intro-text { text-align: center; }
 
-        /* 電腦版 Bento 佈局 */
         @media (min-width: 1024px) {
-            body:not(.force-mobile) .layout-wrapper { flex-direction: row; align-items: flex-start; gap: 1.5rem; }
+            body:not(.force-mobile) .layout-wrapper { flex-direction: row; align-items: flex-start; gap: 2rem; }
             body:not(.force-mobile) .layout-aside { display: flex; flex-direction: column; width: 33.3333%; gap: 1.5rem; }
-            body:not(.force-mobile) .layout-main { display: grid; grid-template-columns: repeat(4, 1fr); width: 66.6667%; gap: 1rem; grid-auto-rows: min-content; }
+            body:not(.force-mobile) .layout-main { display: grid; grid-template-columns: repeat(4, 1fr); width: 66.6667%; gap: 1.25rem; grid-auto-rows: min-content; }
             
             body:not(.force-mobile) .box-intro, body:not(.force-mobile) .box-alliance { order: 0; }
-            
             body:not(.force-mobile) .box-youtube { grid-column: span 4; order: 1; }
             body:not(.force-mobile) .box-comms { grid-column: span 2; order: 2; }
-            body:not(.force-mobile) .box-others { grid-column: span 2; order: 3; display: flex; gap: 1rem; }
+            body:not(.force-mobile) .box-others { grid-column: span 2; order: 3; display: flex; gap: 1.25rem; }
             body:not(.force-mobile) .box-others > div { flex: 1; }
             body:not(.force-mobile) .box-current { grid-column: span 4; order: 4; }
 
-            body:not(.force-mobile) .intro-avatar { width: 100%; height: auto; aspect-ratio: 1/1; margin: 0 0 1rem 0; }
+            body:not(.force-mobile) .intro-avatar { width: 100%; height: auto; aspect-ratio: 1/1; margin: 0 0 1.5rem 0; }
             body:not(.force-mobile) .intro-text { text-align: left; }
         }
     </style>
 </head>
-<body class="font-mono text-gray-300 min-h-screen flex flex-col relative overflow-y-auto overflow-x-hidden">
+<body class="font-mono text-gray-200 min-h-screen flex flex-col relative overflow-y-auto overflow-x-hidden">
 
+    <!-- 載入動畫 -->
     <div id="loading-screen" class="fixed inset-0 z-[1000] bg-cyber-black flex flex-col items-center justify-center transition-all duration-[800ms] ease-in-out">
         <div class="absolute inset-0 perspective-[1000px] overflow-hidden opacity-80">
             <div class="absolute bottom-[-30%] left-[-50%] w-[200%] h-[150%] animate-grid-move"
@@ -135,37 +133,38 @@
             </div>
         </div>
         <div class="relative z-10 flex flex-col items-center">
-            <div class="text-cyber-cyan font-orbitron text-4xl font-bold tracking-[0.3em] mb-6 animate-pulse">NEO_OS</div>
-            <div class="w-64 h-[2px] bg-cyber-gray overflow-hidden">
+            <div class="text-cyber-cyan font-orbitron text-5xl font-bold tracking-[0.3em] mb-6 animate-pulse">NEO_OS</div>
+            <div class="w-72 h-[3px] bg-cyber-gray overflow-hidden">
                 <div id="loading-bar" class="h-full bg-cyber-cyan w-0 transition-all duration-[2000ms] ease-out shadow-[0_0_15px_#00f3ff]"></div>
             </div>
-            <div class="mt-4 text-[10px] font-mono text-cyber-cyan/80 tracking-widest">CONNECTING TO NETWORK...</div>
+            <div class="mt-4 text-xs font-mono text-cyber-cyan/90 tracking-widest">CONNECTING TO NETWORK...</div>
         </div>
     </div>
 
     <div class="scanlines"></div>
 
     <div class="fixed bottom-6 left-6 z-50 hidden lg:flex bg-cyber-dark/95 border border-cyber-cyan/50 p-1 rounded backdrop-blur-sm shadow-lg shadow-cyber-cyan/10">
-        <button id="btn-desktop" class="w-8 h-8 flex items-center justify-center text-cyber-cyan bg-cyber-cyan/20 transition-all" title="電腦版預覽">
-            <i class="fa-solid fa-desktop text-sm"></i>
+        <button id="btn-desktop" class="w-10 h-10 flex items-center justify-center text-cyber-cyan bg-cyber-cyan/20 transition-all" title="電腦版預覽">
+            <i class="fa-solid fa-desktop text-lg"></i>
         </button>
-        <button id="btn-mobile" class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-cyber-cyan transition-all" title="手機版預覽">
-            <i class="fa-solid fa-mobile-screen text-sm"></i>
+        <button id="btn-mobile" class="w-10 h-10 flex items-center justify-center text-gray-500 hover:text-cyber-cyan transition-all" title="手機版預覽">
+            <i class="fa-solid fa-mobile-screen text-lg"></i>
         </button>
     </div>
 
-    <header class="w-full p-6 flex justify-between items-center border-b border-cyber-gray bg-cyber-dark/90 relative z-10">
-        <div class="flex items-center gap-2">
-            <div class="w-3 h-3 bg-cyber-cyan animate-pulse-fast"></div>
-            <span class="font-orbitron font-bold text-cyber-cyan tracking-widest">SYS.CONNECT <span class="text-[10px] text-cyber-cyan/70 ml-2 font-mono tracking-normal hidden sm:inline">// 系統連線</span></span>
+    <header class="w-full p-6 flex justify-between items-center border-b border-cyber-gray bg-cyber-dark/95 relative z-10">
+        <div class="flex items-center gap-3">
+            <div class="w-4 h-4 bg-cyber-cyan animate-pulse-fast"></div>
+            <span class="font-orbitron font-bold text-cyber-cyan tracking-widest text-lg">SYS.CONNECT</span>
         </div>
-        <div class="text-xs text-cyber-gray-400 font-orbitron">[ STATUS: <span class="text-cyber-yellow">ONLINE</span> ]</div>
+        <div class="text-sm text-cyber-gray-400 font-orbitron">[ STATUS: <span class="text-cyber-yellow font-bold">ONLINE</span> ]</div>
     </header>
 
     <div id="app-wrapper" class="w-full max-w-7xl mx-auto p-4 md:p-8 relative z-10 opacity-0 transition-opacity duration-700 mx-auto">
         <main class="layout-wrapper">
             
             <aside class="layout-aside">
+                <!-- 個人介紹區塊 (完全保留原始設定) -->
                 <div class="cyber-box p-1 box-intro">
                     <div class="relative overflow-hidden border-b border-cyber-cyan intro-avatar transition-all duration-300">
                         <img src="https://placehold.co/600x600/0a0a12/00f3ff?text=AVATAR_IMG" alt="Profile" class="w-full h-full object-cover filter contrast-125 saturate-50 hover:saturate-150 transition duration-500">
@@ -185,7 +184,7 @@
 
                         <a href="mailto:HsiaoTzuOWO@gmail.com" class="block w-full text-center bg-transparent border border-cyber-cyan text-cyber-cyan hover:bg-cyber-cyan hover:text-cyber-black transition-all duration-300 font-orbitron font-bold py-2 uppercase tracking-wider relative group overflow-hidden">
                             <span class="relative z-10 flex flex-col items-center justify-center">
-                                <span class="text-sm">CONTACT_ME <span class="font-mono text-[10px] tracking-normal opacity-80 hidden sm:inline">// 建立聯繫</span></span>
+                                <span class="text-sm">CONTACT_ME</span>
                                 <span class="text-[9px] opacity-80 font-mono tracking-normal mt-0.5"><i class="fa-solid fa-envelope mr-1"></i>HsiaoTzuOWO@gmail.com</span>
                             </span>
                         </a>
@@ -195,7 +194,8 @@
 
                 <div class="cyber-box box-alliance hover-glow-cyan p-4 flex flex-col group relative overflow-hidden aspect-square">
                     <div class="text-cyber-cyan font-orbitron text-xs flex items-center justify-between border-b border-cyber-cyan/30 pb-2 mb-3 z-10 relative">
-                        <span>ALLIANCE_NET <span class="font-mono text-[10px] opacity-80 hidden sm:inline ml-2">// 聯盟夥伴</span></span>
+                        <span>ALLIANCE_NET</span>
+                        <span class="font-mono text-[10px] opacity-80">// 聯盟夥伴</span>
                     </div>
                     <div id="alliance-slider" class="flex-1 w-full overflow-hidden relative z-0 rounded border border-cyber-gray bg-cyber-black">
                         <!-- 圖片動態注入輪播 -->
@@ -206,107 +206,118 @@
 
             <section class="layout-main">
                 
-                <div id="yt-carousel-wrapper" class="cyber-box box-youtube hover-glow-cyan p-4 flex flex-col group overflow-hidden min-h-[280px]">
-                    <div class="text-cyber-cyan font-orbitron text-xs flex items-center justify-between border-b border-cyber-cyan/30 pb-2 mb-3">
-                        <span class="flex items-center gap-2">
-                            <!-- 拔掉 FontAwesome，改用 SVG 防擋 -->
-                            <svg class="w-4 h-4 fill-current text-red-500" viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg>
-                            LATEST_TRANSMISSIONS <span class="font-mono text-[10px] opacity-80 hidden sm:inline ml-2">// 最新作品</span>
+                <!-- YouTube 最新影片 -->
+                <div id="yt-carousel-wrapper" class="cyber-box box-youtube hover-glow-cyan p-5 flex flex-col group overflow-hidden min-h-[300px]">
+                    <div class="text-cyber-cyan font-orbitron text-sm flex items-center justify-between border-b border-cyber-cyan/40 pb-3 mb-4">
+                        <span class="flex items-center gap-3 font-bold tracking-wider">
+                            <svg class="w-5 h-5 fill-current text-red-500" viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg>
+                            LATEST_TRANSMISSIONS
+                            <span class="font-mono text-xs text-gray-300 opacity-90 hidden sm:inline-block ml-2">// 最新作品</span>
                         </span>
-                        <span id="yt-status" class="text-cyber-yellow text-[9px] animate-pulse">FETCHING...</span>
+                        <span id="yt-status" class="text-cyber-yellow text-xs animate-pulse font-bold">FETCHING...</span>
                     </div>
                     
                     <div class="relative w-full flex-grow flex items-center mt-2">
-                        <button onclick="scrollCarousel(-1)" class="absolute left-0 z-20 w-8 h-8 bg-black/80 border border-cyber-cyan text-cyber-cyan hover:bg-cyber-cyan hover:text-black transition-colors shadow-[0_0_10px_#050505]"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button onclick="scrollCarousel(-1)" class="absolute left-0 z-20 w-10 h-10 bg-black/90 border-2 border-cyber-cyan text-cyber-cyan hover:bg-cyber-cyan hover:text-black transition-colors shadow-[0_0_10px_#050505]"><i class="fa-solid fa-chevron-left text-lg"></i></button>
                         
-                        <div id="yt-carousel" class="flex w-full overflow-x-auto snap-x snap-mandatory scrollbar-hide scroll-smooth items-center px-10 gap-4 h-[200px]">
+                        <!-- 容器設定固定高度 h-[220px]，子元素透過 JS 強制寫死長寬絕對不會被擠壓 -->
+                        <div id="yt-carousel" class="flex w-full overflow-x-auto snap-x snap-mandatory scrollbar-hide scroll-smooth items-center px-12 gap-5 h-[220px]">
                         </div>
 
-                        <button onclick="scrollCarousel(1)" class="absolute right-0 z-20 w-8 h-8 bg-black/80 border border-cyber-cyan text-cyber-cyan hover:bg-cyber-cyan hover:text-black transition-colors shadow-[0_0_10px_#050505]"><i class="fa-solid fa-chevron-right"></i></button>
+                        <button onclick="scrollCarousel(1)" class="absolute right-0 z-20 w-10 h-10 bg-black/90 border-2 border-cyber-cyan text-cyber-cyan hover:bg-cyber-cyan hover:text-black transition-colors shadow-[0_0_10px_#050505]"><i class="fa-solid fa-chevron-right text-lg"></i></button>
                     </div>
                     <div class="corner-br"></div>
                 </div>
 
-                <!-- 【防擋廣告修復區】改用 box-comms 且移除 fa-brands 依賴，直出 SVG -->
-                <div class="cyber-box box-comms hover-glow-purple p-4 flex flex-col justify-center group h-32">
-                    <div class="text-cyber-purple font-orbitron text-xs flex items-center justify-between border-b border-cyber-purple/30 pb-2 mb-3">
-                        <span>COMMS_LINK <span class="font-mono text-[10px] opacity-80 ml-2">// 社群網絡</span></span>
+                <!-- 社群網絡 -->
+                <div class="cyber-box box-comms hover-glow-purple p-5 flex flex-col justify-center group h-36">
+                    <div class="text-cyber-purple font-orbitron text-sm flex items-center justify-between border-b border-cyber-purple/40 pb-3 mb-4">
+                        <span class="font-bold tracking-wider">COMMS_LINK</span>
+                        <span class="font-mono text-xs opacity-90 text-gray-300">// 通訊連線</span>
                     </div>
-                    <div class="flex flex-row gap-4 items-center justify-center h-full">
-                        <!-- YouTube SVG -->
-                        <a href="https://www.youtube.com/@HsiaoTzuOWO" target="_blank" class="w-12 h-12 flex items-center justify-center rounded-full border border-cyber-gray hover:border-cyber-purple hover:text-cyber-purple transition-all bg-cyber-dark hover:scale-110">
-                            <svg class="w-5 h-5 fill-current" viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg>
+                    <div class="flex flex-row gap-6 items-center justify-center h-full">
+                        <a href="https://www.youtube.com/@HsiaoTzuOWO" target="_blank" class="w-14 h-14 flex items-center justify-center rounded-full border-2 border-cyber-gray hover:border-cyber-purple hover:text-cyber-purple transition-all bg-cyber-dark hover:scale-110">
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg>
                         </a>
-                        <!-- Instagram SVG -->
-                        <a href="#" target="_blank" class="w-12 h-12 flex items-center justify-center rounded-full border border-cyber-gray hover:border-cyber-purple hover:text-cyber-purple transition-all bg-cyber-dark hover:scale-110">
-                            <svg class="w-5 h-5 fill-current" viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
+                        <a href="#" target="_blank" class="w-14 h-14 flex items-center justify-center rounded-full border-2 border-cyber-gray hover:border-cyber-purple hover:text-cyber-purple transition-all bg-cyber-dark hover:scale-110">
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
                         </a>
-                        <!-- TikTok SVG -->
-                        <a href="#" target="_blank" class="w-12 h-12 flex items-center justify-center rounded-full border border-cyber-gray hover:border-cyber-purple hover:text-cyber-purple transition-all bg-cyber-dark hover:scale-110">
-                            <svg class="w-5 h-5 fill-current" viewBox="0 0 448 512"><path d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"/></svg>
+                        <a href="#" target="_blank" class="w-14 h-14 flex items-center justify-center rounded-full border-2 border-cyber-gray hover:border-cyber-purple hover:text-cyber-purple transition-all bg-cyber-dark hover:scale-110">
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 448 512"><path d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"/></svg>
                         </a>
                     </div>
                     <div class="corner-br" style="background-color: #b026ff;"></div>
                 </div>
 
+                <!-- 其他工具 -->
                 <div class="box-others">
-                    <div class="cyber-box hover-glow-pink p-4 flex flex-col items-center justify-center text-center group cursor-pointer h-32">
-                        <i class="fa-solid fa-compact-disc text-2xl text-cyber-pink mb-2 group-hover:animate-spin"></i>
-                        <span class="font-orbitron text-[10px] text-white">BGM_UPLINK</span>
-                        <span class="font-mono text-[9px] text-cyber-pink/80 mt-1">環境音軌</span>
+                    <div class="cyber-box hover-glow-pink p-5 flex flex-col items-center justify-center text-center group cursor-pointer h-36">
+                        <i class="fa-solid fa-compact-disc text-3xl text-cyber-pink mb-3 group-hover:animate-spin"></i>
+                        <span class="font-orbitron text-sm text-white font-bold tracking-wider">BGM_UPLINK</span>
+                        <span class="font-mono text-xs text-cyber-pink/80 mt-1">// 環境音軌</span>
                         <div class="corner-br" style="background-color: #ff003c;"></div>
                     </div>
-                    <div class="cyber-box hover-glow-cyan p-4 flex flex-col justify-between group cursor-pointer h-32">
-                        <div class="text-cyber-cyan font-orbitron text-xs flex justify-between items-center">
-                            <span>ARCHIVE <span class="font-mono text-[10px] opacity-80 ml-2 hidden sm:inline">// 資料庫</span></span> <i class="fa-solid fa-folder-tree"></i>
+                    <div class="cyber-box hover-glow-cyan p-5 flex flex-col justify-between group cursor-pointer h-36">
+                        <div class="text-cyber-cyan font-orbitron text-sm flex flex-col gap-1">
+                            <div class="flex justify-between items-center font-bold tracking-wider">
+                                <span>ARCHIVE</span> <i class="fa-solid fa-folder-tree text-lg"></i>
+                            </div>
+                            <span class="font-mono text-xs text-cyber-cyan/80 mt-1">// 系統日誌</span>
                         </div>
-                        <div class="text-[11px] text-white font-bold group-hover:pl-2 transition-all flex flex-col">
+                        <div class="text-sm text-white font-bold group-hover:pl-2 transition-all flex flex-col">
                             <span>> Read Logs</span>
                         </div>
                         <div class="corner-br"></div>
                     </div>
                 </div>
 
-                <div class="cyber-box box-current hover-glow-yellow p-4 lg:p-6 flex flex-col group relative min-h-min">
-                    <div class="mb-4">
-                        <div class="text-cyber-yellow font-orbitron text-sm flex flex-col gap-1 mb-4">
-                            <div class="flex items-center gap-2 border-b border-cyber-yellow/30 pb-2">
-                                <i class="fa-solid fa-bolt"></i> CURRENT_CO-OP <span class="font-mono text-[10px] opacity-80 ml-2">// 目前合作</span>
+                <!-- 合作內容區塊 -->
+                <div class="cyber-box box-current hover-glow-yellow p-5 lg:p-7 flex flex-col group relative min-h-min">
+                    <div class="mb-5">
+                        <div class="text-cyber-yellow font-orbitron text-base flex flex-col gap-2 mb-5">
+                            <div class="flex items-center justify-between border-b border-cyber-yellow/40 pb-3">
+                                <span class="flex items-center gap-3 font-bold tracking-wider">
+                                    <i class="fa-solid fa-bolt text-lg"></i> CO-OP & SPONSOR
+                                </span>
+                                <span class="font-mono text-sm text-gray-300">// 目前合作</span>
                             </div>
                         </div>
                         
-                        <div id="current-nav-group" class="relative group/nav flex items-center bg-cyber-black p-2 border border-cyber-gray rounded">
-                            <button onclick="changePage('current', -1)" class="absolute -left-3 z-20 w-8 h-10 bg-cyber-black border border-cyber-yellow text-cyber-yellow flex items-center justify-center hover:bg-cyber-yellow hover:text-black transition-colors shadow-[0_0_10px_#050505]">
-                                <i class="fa-solid fa-chevron-left text-xs"></i>
+                        <div id="current-nav-group" class="relative group/nav flex items-center bg-cyber-black p-3 border border-cyber-gray rounded-sm">
+                            <button onclick="changePage('current', -1)" class="absolute -left-4 z-20 w-10 h-12 bg-cyber-black border-2 border-cyber-yellow text-cyber-yellow flex items-center justify-center hover:bg-cyber-yellow hover:text-black transition-colors shadow-[0_0_10px_#050505]">
+                                <i class="fa-solid fa-chevron-left text-sm"></i>
                             </button>
                             
-                            <div id="current-collab-content" class="collab-grid px-2 lg:px-4"></div>
+                            <div id="current-collab-content" class="collab-grid px-3 lg:px-5"></div>
                             
-                            <button onclick="changePage('current', 1)" class="absolute -right-3 z-20 w-8 h-10 bg-cyber-black border border-cyber-yellow text-cyber-yellow flex items-center justify-center hover:bg-cyber-yellow hover:text-black transition-colors shadow-[0_0_10px_#050505]">
-                                <i class="fa-solid fa-chevron-right text-xs"></i>
+                            <button onclick="changePage('current', 1)" class="absolute -right-4 z-20 w-10 h-12 bg-cyber-black border-2 border-cyber-yellow text-cyber-yellow flex items-center justify-center hover:bg-cyber-yellow hover:text-black transition-colors shadow-[0_0_10px_#050505]">
+                                <i class="fa-solid fa-chevron-right text-sm"></i>
                             </button>
                         </div>
                     </div>
 
-                    <details class="group/details border border-cyber-gray/50 bg-cyber-dark/80 mt-2 open:bg-cyber-dark transition-all duration-300">
-                        <summary class="p-3 text-cyber-yellow font-orbitron text-xs flex justify-between items-center hover:bg-cyber-gray/30 transition cursor-pointer select-none">
-                            <span class="flex items-center gap-2"><i class="fa-solid fa-box-archive"></i> PAST_ARCHIVES <span class="font-mono text-[10px] text-cyber-yellow/80 ml-2 hidden sm:inline">// 過往合作紀錄</span></span>
-                            <i class="fa-solid fa-chevron-down transition-transform duration-300 group-open/details:rotate-180"></i>
+                    <details class="group/details border border-cyber-gray/60 bg-cyber-dark/80 mt-3 open:bg-cyber-dark transition-all duration-300">
+                        <summary class="p-4 text-cyber-yellow font-orbitron text-sm flex justify-between items-center hover:bg-cyber-gray/40 transition cursor-pointer select-none">
+                            <span class="flex items-center gap-3 font-bold tracking-wider">
+                                <i class="fa-solid fa-box-archive text-lg"></i> PAST_ARCHIVES 
+                                <span class="font-mono text-xs text-gray-400 ml-3 tracking-normal font-normal hidden sm:inline-block">// 過往合作紀錄</span>
+                            </span>
+                            <i class="fa-solid fa-chevron-down transition-transform duration-300 group-open/details:rotate-180 text-lg"></i>
                         </summary>
-                        <div class="p-3 border-t border-cyber-gray/50 cursor-default bg-cyber-black">
-                            <div class="flex items-center justify-between mb-3">
-                                <div id="collab-tabs" class="flex gap-2 overflow-x-auto scrollbar-hide"></div>
+                        <div class="p-4 border-t border-cyber-gray/60 cursor-default bg-cyber-black">
+                            <div class="flex items-center justify-between mb-4">
+                                <div id="collab-tabs" class="flex gap-3 overflow-x-auto scrollbar-hide py-1"></div>
                             </div>
                             
-                            <div id="past-nav-group" class="relative group/nav flex items-center border border-cyber-gray p-2">
-                                <button onclick="changePage('past', -1)" class="absolute -left-3 z-20 w-8 h-10 bg-cyber-black border border-cyber-yellow text-cyber-yellow flex items-center justify-center hover:bg-cyber-yellow hover:text-black transition-colors shadow-[0_0_10px_#050505]">
-                                    <i class="fa-solid fa-chevron-left text-xs"></i>
+                            <div id="past-nav-group" class="relative group/nav flex items-center border border-cyber-gray p-3">
+                                <button onclick="changePage('past', -1)" class="absolute -left-4 z-20 w-10 h-12 bg-cyber-black border-2 border-cyber-yellow text-cyber-yellow flex items-center justify-center hover:bg-cyber-yellow hover:text-black transition-colors shadow-[0_0_10px_#050505]">
+                                    <i class="fa-solid fa-chevron-left text-sm"></i>
                                 </button>
                                 
-                                <div id="past-collab-content" class="collab-grid px-2 lg:px-4"></div>
+                                <div id="past-collab-content" class="collab-grid px-3 lg:px-5"></div>
                                 
-                                <button onclick="changePage('past', 1)" class="absolute -right-3 z-20 w-8 h-10 bg-cyber-black border border-cyber-yellow text-cyber-yellow flex items-center justify-center hover:bg-cyber-yellow hover:text-black transition-colors shadow-[0_0_10px_#050505]">
-                                    <i class="fa-solid fa-chevron-right text-xs"></i>
+                                <button onclick="changePage('past', 1)" class="absolute -right-4 z-20 w-10 h-12 bg-cyber-black border-2 border-cyber-yellow text-cyber-yellow flex items-center justify-center hover:bg-cyber-yellow hover:text-black transition-colors shadow-[0_0_10px_#050505]">
+                                    <i class="fa-solid fa-chevron-right text-sm"></i>
                                 </button>
                             </div>
                         </div>
@@ -318,7 +329,7 @@
         </main>
     </div>
 
-    <footer class="w-full text-center py-6 text-[10px] text-cyber-gray-400 font-mono relative z-10 mt-auto border-t border-cyber-gray bg-cyber-black">
+    <footer class="w-full text-center py-6 text-xs tracking-widest text-cyber-gray-400 font-mono relative z-10 mt-auto border-t border-cyber-gray bg-cyber-black">
         <p>© 2026 NEO_CREATOR. ALL RIGHTS RESERVED.</p>
     </footer>
 
@@ -341,7 +352,7 @@
             }, 2100);
         };
 
-        /* ================= 2. 設備切換邏輯 (左下角按鈕) ================= */
+        /* ================= 2. 設備切換邏輯 ================= */
         const btnMobile = document.getElementById('btn-mobile');
         const btnDesktop = document.getElementById('btn-desktop');
         const appWrapper = document.getElementById('app-wrapper');
@@ -378,13 +389,13 @@
             navigator.clipboard.writeText(text).then(() => {
                 const notice = document.createElement('div');
                 notice.innerText = 'COPIED: ' + text;
-                notice.className = 'fixed bottom-20 left-1/2 -translate-x-1/2 bg-cyber-yellow text-cyber-black font-orbitron font-bold px-4 py-2 z-50 animate-pulse rounded shadow-lg shadow-cyber-yellow/50';
+                notice.className = 'fixed bottom-20 left-1/2 -translate-x-1/2 bg-cyber-yellow text-cyber-black font-orbitron font-bold text-sm px-6 py-3 z-50 animate-pulse rounded shadow-lg shadow-cyber-yellow/50 tracking-wider';
                 document.body.appendChild(notice);
                 setTimeout(() => notice.remove(), 1500);
             });
         }
 
-        /* ================= 4. 合作卡片渲染 ================= */
+        /* ================= 4. 合作卡片渲染 (修復字體與加高排版) ================= */
         function getItemsPerPage() {
             return document.body.classList.contains('force-mobile') || window.innerWidth < 1024 ? 4 : 8;
         }
@@ -424,7 +435,7 @@
             
             years.forEach(year => {
                 const btn = document.createElement('button');
-                btn.className = `px-3 py-1 text-[11px] font-orbitron border transition-colors ${year === currentPastYear ? 'bg-cyber-yellow text-cyber-black border-cyber-yellow' : 'bg-transparent text-gray-400 border-cyber-gray hover:text-cyber-yellow'}`;
+                btn.className = `px-4 py-1.5 text-xs font-orbitron border-2 transition-colors font-bold ${year === currentPastYear ? 'bg-cyber-yellow text-cyber-black border-cyber-yellow' : 'bg-transparent text-gray-400 border-cyber-gray hover:text-cyber-yellow hover:border-cyber-yellow'}`;
                 btn.innerText = year;
                 btn.onclick = (e) => { 
                     e.preventDefault(); 
@@ -440,23 +451,28 @@
 
         function createCollabCard(item) {
             const promoHTML = item.promoCode ? `
-                <div class="mt-auto flex-shrink-0 flex items-center justify-between bg-cyber-dark border border-cyber-yellow/40 pl-2 pr-1 py-0.5 rounded-sm">
-                    <span class="font-mono text-[9px] font-bold text-cyber-yellow">CODE: ${item.promoCode}</span>
-                    <button onclick="copyToClipboard('${item.promoCode}', event)" class="text-cyber-yellow hover:text-white p-1 border-l border-cyber-yellow/40 pl-2"><i class="fa-regular fa-clone text-[10px]"></i></button>
+                <div class="mt-auto flex-shrink-0 flex items-center justify-between bg-cyber-dark border border-cyber-yellow/50 pl-3 pr-2 py-1 rounded-sm shadow-inner shadow-cyber-yellow/10">
+                    <span class="font-mono text-xs font-bold text-cyber-yellow tracking-wider">CODE: ${item.promoCode}</span>
+                    <button onclick="copyToClipboard('${item.promoCode}', event)" class="text-cyber-yellow hover:text-white p-1 border-l border-cyber-yellow/50 pl-3"><i class="fa-regular fa-clone text-sm"></i></button>
                 </div>
             ` : '';
 
             const card = document.createElement('a');
             card.href = item.link;
-            card.className = "flex flex-row bg-cyber-gray/20 border border-cyber-gray/60 hover:border-cyber-cyan transition h-[100px] group overflow-hidden w-full";
+            // 配合 CSS 的 grid row height 120px
+            card.className = "flex flex-row bg-cyber-gray/40 border border-cyber-gray/80 hover:border-cyber-cyan transition h-[120px] group overflow-hidden w-full";
             card.innerHTML = `
-                <div class="w-[100px] flex-shrink-0 relative border-r border-cyber-gray/60 bg-cyber-black overflow-hidden">
+                <div class="w-[120px] flex-shrink-0 relative border-r border-cyber-gray/80 bg-cyber-black overflow-hidden">
                     <img src="${item.image}" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition duration-500">
-                    <div class="absolute top-0 left-0 bg-cyber-dark/90 px-1 py-0.5 text-[7px] text-cyber-cyan border-b border-r border-cyber-cyan/50 font-orbitron">${item.type}</div>
+                    <div class="absolute top-0 left-0 bg-cyber-dark/95 px-1.5 py-0.5 text-[9px] text-cyber-cyan border-b border-r border-cyber-cyan/60 font-orbitron font-bold tracking-wider">${item.type}</div>
                 </div>
-                <div class="p-2.5 flex flex-col flex-1 min-w-0">
-                    <h4 class="text-white font-bold text-xs truncate group-hover:text-cyber-cyan mb-1">${item.name}</h4>
-                    <p class="text-[9px] text-gray-400 line-clamp-2 leading-relaxed flex-shrink-0 mb-1">${item.desc}</p>
+                <div class="p-3 flex flex-col flex-1 min-w-0 justify-between">
+                    <div>
+                        <!-- 將這裡的 text-xs 改為 text-sm，提升可讀性與字體對比 -->
+                        <h4 class="text-white font-bold text-sm truncate group-hover:text-cyber-cyan mb-1.5">${item.name}</h4>
+                        <!-- 將描述文字放大並調整間距 -->
+                        <p class="text-xs text-gray-300 line-clamp-2 leading-relaxed flex-shrink-0 mb-1 font-medium">${item.desc}</p>
+                    </div>
                     ${promoHTML}
                 </div>
             `;
@@ -465,7 +481,7 @@
 
         function createEmptySlotCard() {
             const card = document.createElement('div');
-            card.className = "h-[100px] w-full opacity-0 pointer-events-none"; 
+            card.className = "h-[120px] w-full opacity-0 pointer-events-none"; 
             return card;
         }
 
@@ -526,7 +542,7 @@
             });
         }
 
-        /* ================= 5. YouTube API 自動抓取與輪播 ================= */
+        /* ================= 5. YouTube API (徹底強制防擠壓 16:9 與 9:16) ================= */
         const carousel = document.getElementById('yt-carousel');
         function scrollCarousel(direction) {
             carousel.scrollBy({ left: direction * (carousel.clientWidth * 0.7), behavior: 'smooth' });
@@ -537,13 +553,19 @@
             videos.forEach(video => {
                 const card = document.createElement('a');
                 card.href = video.link; card.target = "_blank";
-                card.className = "h-full flex-shrink-0 snap-center relative block group border border-cyber-gray hover:border-cyber-cyan transition-all overflow-hidden";
-                card.style.aspectRatio = video.isShorts ? '9/16' : '16/9';
+                
+                // 【核心修正】: 容器高度為 220px，透過 JS 直接計算並寫入絕對寬度像素，徹底防止 Flexbox 擠壓變形
+                const cardWidth = video.isShorts ? (220 * 9 / 16) : (220 * 16 / 9);
+                
+                card.className = "shrink-0 snap-center relative block group border-2 border-cyber-gray hover:border-cyber-cyan transition-all overflow-hidden bg-cyber-black";
+                card.style.width = `${cardWidth}px`;
+                card.style.height = `220px`;
+
                 card.innerHTML = `
                     <img src="${video.thumbnail}" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition duration-500">
-                    <div class="absolute bottom-0 left-0 w-full p-2 bg-gradient-to-t from-black to-transparent pointer-events-none">
-                        <div class="text-[8px] text-cyber-cyan font-mono bg-black/50 inline-block px-1 mb-1">${video.pubDate}</div>
-                        <h3 class="font-orbitron font-bold text-[10px] text-white group-hover:text-cyber-cyan line-clamp-2 leading-tight">${video.title}</h3>
+                    <div class="absolute bottom-0 left-0 w-full p-3 bg-gradient-to-t from-black via-black/80 to-transparent pointer-events-none">
+                        <div class="text-[10px] text-cyber-cyan font-mono bg-black/70 inline-block px-1.5 py-0.5 mb-1.5 font-bold tracking-widest">${video.pubDate}</div>
+                        <h3 class="font-orbitron font-bold text-sm text-white group-hover:text-cyber-cyan line-clamp-2 leading-tight">${video.title}</h3>
                     </div>
                 `;
                 carousel.appendChild(card);
@@ -555,7 +577,6 @@
             const CHANNEL_ID = "UCAldtdOCghMLl8c8MCBjN7g"; 
             const RSS_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
             
-            // 使用 allorigins 代理伺服器繞過 CORS 並直接抓取原始 XML，避開 rss2json 的阻擋與限制
             const PROXY_URL = `https://api.allorigins.win/raw?url=${encodeURIComponent(RSS_URL)}`;
             
             try {
@@ -563,7 +584,6 @@
                 if (!response.ok) throw new Error('Network response was not ok');
                 const xmlText = await response.text();
                 
-                // 解析原始 XML 資料
                 const parser = new DOMParser();
                 const xmlDoc = parser.parseFromString(xmlText, "text/xml");
                 const entries = Array.from(xmlDoc.querySelectorAll("entry")).slice(0, 5);
@@ -575,10 +595,10 @@
                         const published = entry.querySelector("published").textContent;
                         const pubDate = new Date(published).toISOString().split('T')[0];
                         
-                        // 取得 yt:videoId 來重組高清預覽圖
                         const videoIdNode = entry.getElementsByTagName("yt:videoId")[0];
                         const videoId = videoIdNode ? videoIdNode.textContent : link.split('v=')[1];
                         
+                        // 利用標題是否包含 #shorts 來精確判斷是否為 9:16
                         const isShorts = title.toLowerCase().includes('#shorts');
                         const thumbnail = `https://i3.ytimg.com/vi/${videoId}/hqdefault.jpg`;
 
@@ -596,11 +616,10 @@
                 statusEl.innerText = 'SYNC_BACKUP';
                 statusEl.classList.replace('text-cyber-yellow', 'text-cyber-pink');
                 
-                // API 被阻擋或發生錯誤時，顯示備用內容，保證 UI 完整美觀
                 const mockVideos = [
                     { title: "【桌搭#1】萬元內的夢想桌搭改造", thumbnail: "https://placehold.co/1920x1080/0a0a12/00f3ff?text=YOUTUBE+16:9", link: "#", pubDate: "2024-05-12", isShorts: false },
-                    { title: "這款鍵盤的手感太神了！ #Shorts", thumbnail: "https://placehold.co/1080x1920/1a1a24/ff003c?text=SHORTS", link: "#", pubDate: "2024-05-08", isShorts: true },
-                    { title: "賽博龐克一日挑戰 #Shorts", thumbnail: "https://placehold.co/1080x1920/0a0a12/fcee0a?text=SHORTS+2", link: "#", pubDate: "2024-04-20", isShorts: true },
+                    { title: "這款鍵盤的手感太神了！ #Shorts", thumbnail: "https://placehold.co/1080x1920/1a1a24/ff003c?text=SHORTS+9:16", link: "#", pubDate: "2024-05-08", isShorts: true },
+                    { title: "賽博龐克一日挑戰 #Shorts", thumbnail: "https://placehold.co/1080x1920/0a0a12/fcee0a?text=SHORTS+9:16", link: "#", pubDate: "2024-04-20", isShorts: true },
                     { title: "年度愛用軟體大公開", thumbnail: "https://placehold.co/1920x1080/1a1a24/b026ff?text=YOUTUBE+16:9", link: "#", pubDate: "2024-03-15", isShorts: false }
                 ];
                 renderYouTubeVideos(mockVideos);
