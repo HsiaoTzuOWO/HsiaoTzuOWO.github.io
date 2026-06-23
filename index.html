@@ -96,9 +96,9 @@
         .layout-wrapper { display: flex; flex-direction: column; gap: 1rem; transition: max-width 0.5s ease; }
         .layout-aside, .layout-main { display: contents; }
         
-        /* 手機版排序 */
+        /* 手機版排序 (將原本的 box-social 更名為 box-comms 防擋) */
         .box-intro { order: 1; }
-        .box-social { order: 2; }
+        .box-comms { order: 2; }
         .box-current { order: 3; }
         .box-youtube { order: 4; }
         .box-alliance { order: 5; }
@@ -116,7 +116,7 @@
             body:not(.force-mobile) .box-intro, body:not(.force-mobile) .box-alliance { order: 0; }
             
             body:not(.force-mobile) .box-youtube { grid-column: span 4; order: 1; }
-            body:not(.force-mobile) .box-social { grid-column: span 2; order: 2; }
+            body:not(.force-mobile) .box-comms { grid-column: span 2; order: 2; }
             body:not(.force-mobile) .box-others { grid-column: span 2; order: 3; display: flex; gap: 1rem; }
             body:not(.force-mobile) .box-others > div { flex: 1; }
             body:not(.force-mobile) .box-current { grid-column: span 4; order: 4; }
@@ -145,7 +145,7 @@
 
     <div class="scanlines"></div>
 
-    <div class="fixed bottom-6 left-6 z-50 flex bg-cyber-dark/95 border border-cyber-cyan/50 p-1 rounded backdrop-blur-sm shadow-lg shadow-cyber-cyan/10">
+    <div class="fixed bottom-6 left-6 z-50 hidden lg:flex bg-cyber-dark/95 border border-cyber-cyan/50 p-1 rounded backdrop-blur-sm shadow-lg shadow-cyber-cyan/10">
         <button id="btn-desktop" class="w-8 h-8 flex items-center justify-center text-cyber-cyan bg-cyber-cyan/20 transition-all" title="電腦版預覽">
             <i class="fa-solid fa-desktop text-sm"></i>
         </button>
@@ -157,7 +157,7 @@
     <header class="w-full p-6 flex justify-between items-center border-b border-cyber-gray bg-cyber-dark/90 relative z-10">
         <div class="flex items-center gap-2">
             <div class="w-3 h-3 bg-cyber-cyan animate-pulse-fast"></div>
-            <span class="font-orbitron font-bold text-cyber-cyan tracking-widest">SYS.CONNECT</span>
+            <span class="font-orbitron font-bold text-cyber-cyan tracking-widest">SYS.CONNECT <span class="text-[10px] text-cyber-cyan/70 ml-2 font-mono tracking-normal hidden sm:inline">// 系統連線</span></span>
         </div>
         <div class="text-xs text-cyber-gray-400 font-orbitron">[ STATUS: <span class="text-cyber-yellow">ONLINE</span> ]</div>
     </header>
@@ -185,7 +185,7 @@
 
                         <a href="mailto:HsiaoTzuOWO@gmail.com" class="block w-full text-center bg-transparent border border-cyber-cyan text-cyber-cyan hover:bg-cyber-cyan hover:text-cyber-black transition-all duration-300 font-orbitron font-bold py-2 uppercase tracking-wider relative group overflow-hidden">
                             <span class="relative z-10 flex flex-col items-center justify-center">
-                                <span class="text-sm">CONTACT_ME</span>
+                                <span class="text-sm">CONTACT_ME <span class="font-mono text-[10px] tracking-normal opacity-80 hidden sm:inline">// 建立聯繫</span></span>
                                 <span class="text-[9px] opacity-80 font-mono tracking-normal mt-0.5"><i class="fa-solid fa-envelope mr-1"></i>HsiaoTzuOWO@gmail.com</span>
                             </span>
                         </a>
@@ -195,8 +195,7 @@
 
                 <div class="cyber-box box-alliance hover-glow-cyan p-4 flex flex-col group relative overflow-hidden aspect-square">
                     <div class="text-cyber-cyan font-orbitron text-xs flex items-center justify-between border-b border-cyber-cyan/30 pb-2 mb-3 z-10 relative">
-                        <span>ALLIANCE_NET</span>
-                        <span class="font-mono text-[10px] opacity-80">聯盟夥伴</span>
+                        <span>ALLIANCE_NET <span class="font-mono text-[10px] opacity-80 hidden sm:inline ml-2">// 聯盟夥伴</span></span>
                     </div>
                     <div id="alliance-slider" class="flex-1 w-full overflow-hidden relative z-0 rounded border border-cyber-gray bg-cyber-black">
                         <!-- 圖片動態注入輪播 -->
@@ -209,7 +208,11 @@
                 
                 <div id="yt-carousel-wrapper" class="cyber-box box-youtube hover-glow-cyan p-4 flex flex-col group overflow-hidden min-h-[280px]">
                     <div class="text-cyber-cyan font-orbitron text-xs flex items-center justify-between border-b border-cyber-cyan/30 pb-2 mb-3">
-                        <span class="flex items-center gap-2"><i class="fa-brands fa-youtube text-red-500 text-sm"></i> LATEST_TRANSMISSIONS</span>
+                        <span class="flex items-center gap-2">
+                            <!-- 拔掉 FontAwesome，改用 SVG 防擋 -->
+                            <svg class="w-4 h-4 fill-current text-red-500" viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg>
+                            LATEST_TRANSMISSIONS <span class="font-mono text-[10px] opacity-80 hidden sm:inline ml-2">// 最新作品</span>
+                        </span>
                         <span id="yt-status" class="text-cyber-yellow text-[9px] animate-pulse">FETCHING...</span>
                     </div>
                     
@@ -224,14 +227,24 @@
                     <div class="corner-br"></div>
                 </div>
 
-                <div class="cyber-box box-social hover-glow-purple p-4 flex flex-col justify-center group h-32">
+                <!-- 【防擋廣告修復區】改用 box-comms 且移除 fa-brands 依賴，直出 SVG -->
+                <div class="cyber-box box-comms hover-glow-purple p-4 flex flex-col justify-center group h-32">
                     <div class="text-cyber-purple font-orbitron text-xs flex items-center justify-between border-b border-cyber-purple/30 pb-2 mb-3">
-                        <span>SOCIAL_NET</span>
+                        <span>COMMS_LINK <span class="font-mono text-[10px] opacity-80 ml-2">// 社群網絡</span></span>
                     </div>
                     <div class="flex flex-row gap-4 items-center justify-center h-full">
-                        <a href="https://www.youtube.com/@HsiaoTzuOWO" target="_blank" class="w-12 h-12 flex items-center justify-center rounded-full border border-cyber-gray hover:border-cyber-purple hover:text-cyber-purple transition-all text-xl bg-cyber-dark hover:scale-110"><i class="fa-brands fa-youtube"></i></a>
-                        <a href="#" target="_blank" class="w-12 h-12 flex items-center justify-center rounded-full border border-cyber-gray hover:border-cyber-purple hover:text-cyber-purple transition-all text-xl bg-cyber-dark hover:scale-110"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#" target="_blank" class="w-12 h-12 flex items-center justify-center rounded-full border border-cyber-gray hover:border-cyber-purple hover:text-cyber-purple transition-all text-xl bg-cyber-dark hover:scale-110"><i class="fa-brands fa-tiktok"></i></a>
+                        <!-- YouTube SVG -->
+                        <a href="https://www.youtube.com/@HsiaoTzuOWO" target="_blank" class="w-12 h-12 flex items-center justify-center rounded-full border border-cyber-gray hover:border-cyber-purple hover:text-cyber-purple transition-all bg-cyber-dark hover:scale-110">
+                            <svg class="w-5 h-5 fill-current" viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg>
+                        </a>
+                        <!-- Instagram SVG -->
+                        <a href="#" target="_blank" class="w-12 h-12 flex items-center justify-center rounded-full border border-cyber-gray hover:border-cyber-purple hover:text-cyber-purple transition-all bg-cyber-dark hover:scale-110">
+                            <svg class="w-5 h-5 fill-current" viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
+                        </a>
+                        <!-- TikTok SVG -->
+                        <a href="#" target="_blank" class="w-12 h-12 flex items-center justify-center rounded-full border border-cyber-gray hover:border-cyber-purple hover:text-cyber-purple transition-all bg-cyber-dark hover:scale-110">
+                            <svg class="w-5 h-5 fill-current" viewBox="0 0 448 512"><path d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"/></svg>
+                        </a>
                     </div>
                     <div class="corner-br" style="background-color: #b026ff;"></div>
                 </div>
@@ -240,11 +253,12 @@
                     <div class="cyber-box hover-glow-pink p-4 flex flex-col items-center justify-center text-center group cursor-pointer h-32">
                         <i class="fa-solid fa-compact-disc text-2xl text-cyber-pink mb-2 group-hover:animate-spin"></i>
                         <span class="font-orbitron text-[10px] text-white">BGM_UPLINK</span>
+                        <span class="font-mono text-[9px] text-cyber-pink/80 mt-1">環境音軌</span>
                         <div class="corner-br" style="background-color: #ff003c;"></div>
                     </div>
                     <div class="cyber-box hover-glow-cyan p-4 flex flex-col justify-between group cursor-pointer h-32">
                         <div class="text-cyber-cyan font-orbitron text-xs flex justify-between items-center">
-                            <span>ARCHIVE</span> <i class="fa-solid fa-folder-tree"></i>
+                            <span>ARCHIVE <span class="font-mono text-[10px] opacity-80 ml-2 hidden sm:inline">// 資料庫</span></span> <i class="fa-solid fa-folder-tree"></i>
                         </div>
                         <div class="text-[11px] text-white font-bold group-hover:pl-2 transition-all flex flex-col">
                             <span>> Read Logs</span>
@@ -257,7 +271,7 @@
                     <div class="mb-4">
                         <div class="text-cyber-yellow font-orbitron text-sm flex flex-col gap-1 mb-4">
                             <div class="flex items-center gap-2 border-b border-cyber-yellow/30 pb-2">
-                                <i class="fa-solid fa-bolt"></i> CO-OP & SPONSOR
+                                <i class="fa-solid fa-bolt"></i> CURRENT_CO-OP <span class="font-mono text-[10px] opacity-80 ml-2">// 目前合作</span>
                             </div>
                         </div>
                         
@@ -276,7 +290,7 @@
 
                     <details class="group/details border border-cyber-gray/50 bg-cyber-dark/80 mt-2 open:bg-cyber-dark transition-all duration-300">
                         <summary class="p-3 text-cyber-yellow font-orbitron text-xs flex justify-between items-center hover:bg-cyber-gray/30 transition cursor-pointer select-none">
-                            <span class="flex items-center gap-2"><i class="fa-solid fa-box-archive"></i> PAST_ARCHIVES</span>
+                            <span class="flex items-center gap-2"><i class="fa-solid fa-box-archive"></i> PAST_ARCHIVES <span class="font-mono text-[10px] text-cyber-yellow/80 ml-2 hidden sm:inline">// 過往合作紀錄</span></span>
                             <i class="fa-solid fa-chevron-down transition-transform duration-300 group-open/details:rotate-180"></i>
                         </summary>
                         <div class="p-3 border-t border-cyber-gray/50 cursor-default bg-cyber-black">
@@ -305,7 +319,7 @@
     </div>
 
     <footer class="w-full text-center py-6 text-[10px] text-cyber-gray-400 font-mono relative z-10 mt-auto border-t border-cyber-gray bg-cyber-black">
-        <p>© 2077 NEO_CREATOR. ALL RIGHTS RESERVED.</p>
+        <p>© 2026 NEO_CREATOR. ALL RIGHTS RESERVED.</p>
     </footer>
 
     <script>
@@ -370,7 +384,7 @@
             });
         }
 
-        /* ================= 4. 合作卡片渲染 (動態適應 4筆/8筆) ================= */
+        /* ================= 4. 合作卡片渲染 ================= */
         function getItemsPerPage() {
             return document.body.classList.contains('force-mobile') || window.innerWidth < 1024 ? 4 : 8;
         }
@@ -449,14 +463,12 @@
             return card;
         }
 
-        // 修改：使用完全透明的隱形卡片來佔位，確保沒有虛線框或閃爍，但完美撐起空間
         function createEmptySlotCard() {
             const card = document.createElement('div');
             card.className = "h-[100px] w-full opacity-0 pointer-events-none"; 
             return card;
         }
 
-        // 修改：提升轉場的絲滑感（稍微下沉並淡出，然後回彈淡入）
         function animateGridLoad(section, updateLogic) {
             const container = document.getElementById(`${section}-collab-content`);
             container.style.opacity = '0';
@@ -466,7 +478,7 @@
                 updateLogic();
                 container.style.opacity = '1';
                 container.style.transform = 'translateY(0)';
-            }, 450); // 增加動畫等待時間讓肉眼覺得更滑順
+            }, 450);
         }
 
         function loadGridContent(section) {
@@ -485,7 +497,6 @@
             const start = (pageState[section] - 1) * limit;
             const pageItems = items.slice(start, start + limit);
             
-            // 就算該頁只有 1 個商品，迴圈依舊會補足透明的空位，保證高度不塌陷
             for (let i = 0; i < limit; i++) {
                 if (pageItems[i]) {
                     container.appendChild(createCollabCard(pageItems[i]));
@@ -515,21 +526,15 @@
             });
         }
 
-        /* ================= 5. YouTube 輪播 ================= */
+        /* ================= 5. YouTube API 自動抓取與輪播 ================= */
         const carousel = document.getElementById('yt-carousel');
         function scrollCarousel(direction) {
             carousel.scrollBy({ left: direction * (carousel.clientWidth * 0.7), behavior: 'smooth' });
         }
 
-        function loadYouTube() {
-            const mockVideos = [
-                { title: "【桌搭#1】萬元內的夢想桌搭改造", thumbnail: "https://placehold.co/1920x1080/0a0a12/00f3ff?text=YOUTUBE+16:9", link: "#", pubDate: "2024-05-12", isShorts: false },
-                { title: "這款鍵盤的手感太神了！ #Shorts", thumbnail: "https://placehold.co/1080x1920/1a1a24/ff003c?text=SHORTS", link: "#", pubDate: "2024-05-08", isShorts: true },
-                { title: "賽博龐克一日挑戰 #Shorts", thumbnail: "https://placehold.co/1080x1920/0a0a12/fcee0a?text=SHORTS+2", link: "#", pubDate: "2024-04-20", isShorts: true },
-                { title: "年度愛用軟體大公開", thumbnail: "https://placehold.co/1920x1080/1a1a24/b026ff?text=YOUTUBE+16:9", link: "#", pubDate: "2024-03-15", isShorts: false }
-            ];
-            
-            mockVideos.forEach(video => {
+        function renderYouTubeVideos(videos) {
+            carousel.innerHTML = '';
+            videos.forEach(video => {
                 const card = document.createElement('a');
                 card.href = video.link; card.target = "_blank";
                 card.className = "h-full flex-shrink-0 snap-center relative block group border border-cyber-gray hover:border-cyber-cyan transition-all overflow-hidden";
@@ -543,8 +548,63 @@
                 `;
                 carousel.appendChild(card);
             });
-            document.getElementById('yt-status').innerText = 'SYNC_COMPLETE';
-            document.getElementById('yt-status').classList.replace('text-cyber-yellow', 'text-cyber-cyan');
+        }
+
+        async function fetchYouTubeFeed() {
+            const statusEl = document.getElementById('yt-status');
+            const CHANNEL_ID = "UCAldtdOCghMLl8c8MCBjN7g"; 
+            const RSS_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
+            
+            // 使用 allorigins 代理伺服器繞過 CORS 並直接抓取原始 XML，避開 rss2json 的阻擋與限制
+            const PROXY_URL = `https://api.allorigins.win/raw?url=${encodeURIComponent(RSS_URL)}`;
+            
+            try {
+                const response = await fetch(PROXY_URL);
+                if (!response.ok) throw new Error('Network response was not ok');
+                const xmlText = await response.text();
+                
+                // 解析原始 XML 資料
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(xmlText, "text/xml");
+                const entries = Array.from(xmlDoc.querySelectorAll("entry")).slice(0, 5);
+                
+                if (entries.length > 0) {
+                    const latestVideos = entries.map(entry => {
+                        const title = entry.querySelector("title").textContent;
+                        const link = entry.querySelector("link").getAttribute("href");
+                        const published = entry.querySelector("published").textContent;
+                        const pubDate = new Date(published).toISOString().split('T')[0];
+                        
+                        // 取得 yt:videoId 來重組高清預覽圖
+                        const videoIdNode = entry.getElementsByTagName("yt:videoId")[0];
+                        const videoId = videoIdNode ? videoIdNode.textContent : link.split('v=')[1];
+                        
+                        const isShorts = title.toLowerCase().includes('#shorts');
+                        const thumbnail = `https://i3.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+
+                        return { title, thumbnail, link, pubDate, isShorts };
+                    });
+                    
+                    renderYouTubeVideos(latestVideos);
+                    statusEl.innerText = 'SYNC_COMPLETE';
+                    statusEl.classList.replace('text-cyber-yellow', 'text-cyber-cyan');
+                } else {
+                     throw new Error('No entries found');
+                }
+            } catch (error) {
+                console.error('Error fetching YouTube data:', error);
+                statusEl.innerText = 'SYNC_BACKUP';
+                statusEl.classList.replace('text-cyber-yellow', 'text-cyber-pink');
+                
+                // API 被阻擋或發生錯誤時，顯示備用內容，保證 UI 完整美觀
+                const mockVideos = [
+                    { title: "【桌搭#1】萬元內的夢想桌搭改造", thumbnail: "https://placehold.co/1920x1080/0a0a12/00f3ff?text=YOUTUBE+16:9", link: "#", pubDate: "2024-05-12", isShorts: false },
+                    { title: "這款鍵盤的手感太神了！ #Shorts", thumbnail: "https://placehold.co/1080x1920/1a1a24/ff003c?text=SHORTS", link: "#", pubDate: "2024-05-08", isShorts: true },
+                    { title: "賽博龐克一日挑戰 #Shorts", thumbnail: "https://placehold.co/1080x1920/0a0a12/fcee0a?text=SHORTS+2", link: "#", pubDate: "2024-04-20", isShorts: true },
+                    { title: "年度愛用軟體大公開", thumbnail: "https://placehold.co/1920x1080/1a1a24/b026ff?text=YOUTUBE+16:9", link: "#", pubDate: "2024-03-15", isShorts: false }
+                ];
+                renderYouTubeVideos(mockVideos);
+            }
         }
 
         /* ================= 6. 聯盟夥伴 2x2 動態輪播 ================= */
@@ -558,7 +618,7 @@
         function initAllianceSlider() {
             const slider = document.getElementById('alliance-slider');
             const sliderInner = document.createElement('div');
-            sliderInner.className = 'flex w-full h-full transition-transform duration-[1200ms] ease-in-out'; // 增加滑動的絲滑感
+            sliderInner.className = 'flex w-full h-full transition-transform duration-[1200ms] ease-in-out'; 
             
             const pagesCount = Math.ceil(allianceBrands.length / 4);
             
@@ -583,15 +643,14 @@
                     currentBrandPage = (currentBrandPage + 1) % pagesCount;
                     sliderInner.style.transform = `translateX(-${currentBrandPage * 100}%)`;
                 }
-            }, 5000); // 更改為 5 秒切換
+            }, 5000); 
         }
 
         /* ================= 7. 全區塊自動輪播與防干擾邏輯 ================= */
         function initGlobalAutoPlay() {
-            const INTERVAL_TIME = 8000; // 合作區塊維持 8000 毫秒 (8秒)
-            const YT_INTERVAL_TIME = 5000; // YouTube 專屬 5000 毫秒 (5秒)
+            const INTERVAL_TIME = 8000; 
+            const YT_INTERVAL_TIME = 5000; 
 
-            // YouTube 自動輪播
             const ytWrapper = document.getElementById('yt-carousel-wrapper');
             let ytTimer;
             const startYt = () => {
@@ -611,7 +670,6 @@
             ytWrapper.addEventListener('touchend', startYt, {passive: true});
             startYt();
 
-            // 目前合作內容 (Current) 自動輪播
             const currentNav = document.getElementById('current-nav-group');
             let currentTimer;
             const startCurrent = () => { clearInterval(currentTimer); currentTimer = setInterval(() => changePage('current', 1, true), INTERVAL_TIME); };
@@ -622,7 +680,6 @@
             currentNav.addEventListener('touchend', startCurrent, {passive: true});
             startCurrent();
 
-            // 往期合作 (Past) 自動輪播
             const pastNav = document.getElementById('past-nav-group');
             let pastTimer;
             const startPast = () => { clearInterval(pastTimer); pastTimer = setInterval(() => changePage('past', 1, true), INTERVAL_TIME); };
@@ -643,7 +700,7 @@
             renderCollabTabs();
             loadGridContent('current');
             loadGridContent('past');
-            loadYouTube();
+            fetchYouTubeFeed(); 
             initAllianceSlider();
             initGlobalAutoPlay();
         });
