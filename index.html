@@ -82,11 +82,11 @@
             user-drag: none;
             -webkit-user-select: none;
             user-select: none;
-            -webkit-touch-callout: none; /* 禁用 iOS/Android 原生長按圖片選單 */
-            pointer-events: none; /* 讓所有手指點擊穿透圖片，由外層標籤接管，從根本上杜絕存圖 */
+            -webkit-touch-callout: none;
+            pointer-events: none;
         }
         a, button {
-            -webkit-touch-callout: none; /* 防止連結長按跳出預覽與複製選單 */
+            -webkit-touch-callout: none;
         }
 
         /* 排版系統：合作內容網格 */
@@ -164,13 +164,13 @@
         </button>
     </div>
 
-    <!-- 修復：自適應 Header 解決手機版排版過擠問題 -->
-    <header class="w-full p-4 sm:p-6 flex justify-between items-center border-b border-cyber-gray bg-cyber-dark/95 relative z-10 gap-2">
+    <!-- 修復 1：加入 whitespace-nowrap 強制不換行，解決中括號斷行問題 -->
+    <header class="w-full p-4 sm:p-6 flex justify-between items-center border-b border-cyber-gray bg-cyber-dark/95 relative z-10 gap-2 overflow-hidden">
         <div class="flex items-center gap-2 sm:gap-3 shrink-0">
             <div class="w-3 h-3 sm:w-4 sm:h-4 bg-cyber-cyan animate-pulse-fast"></div>
             <span class="font-orbitron font-bold text-cyber-cyan tracking-widest text-base sm:text-lg">SYS.CONNECT</span>
         </div>
-        <div class="text-[10px] sm:text-sm text-cyber-gray-400 font-orbitron shrink-0">[ STATUS: <span class="text-cyber-yellow font-bold">ONLINE</span> ]</div>
+        <div class="text-[10px] sm:text-sm text-cyber-gray-400 font-orbitron shrink-0 whitespace-nowrap">[ STATUS: <span class="text-cyber-yellow font-bold">ONLINE</span> ]</div>
     </header>
 
     <div id="app-wrapper" class="w-full max-w-7xl mx-auto p-4 md:p-8 relative z-10 opacity-0 transition-opacity duration-700 mx-auto">
@@ -180,7 +180,6 @@
                 <!-- 個人介紹區塊 -->
                 <div class="cyber-box p-1 box-intro">
                     <div class="relative overflow-hidden border-b border-cyber-cyan intro-avatar transition-all duration-300 group/avatar">
-                        <!-- 加入 group-hover/avatar 支援：因為防盜機制拔掉了 img 的互動，改由外層容器觸發 hover 特效 -->
                         <img src="./images/頭貼.jpg" alt="Profile" class="w-full h-full object-cover filter contrast-125 saturate-50 group-hover/avatar:saturate-150 transition duration-500">
                         <div class="absolute bottom-2 right-2 bg-cyber-cyan text-cyber-black text-[10px] font-bold px-2 py-0.5 font-orbitron hidden lg:block">IG 3.3K</div>
                     </div>
@@ -199,7 +198,6 @@
                         </p>
 
                         <div class="relative z-50">
-                            <!-- 點擊觸發 JS，在 JS 內判斷設備行為 -->
                             <button onclick="handleMailClick(event)" class="block w-full text-center bg-transparent border border-cyber-cyan text-cyber-cyan hover:bg-cyber-cyan hover:text-cyber-black transition-all duration-300 font-orbitron font-bold py-2 uppercase tracking-wider relative group overflow-hidden cursor-pointer">
                                 <span class="relative z-10 flex flex-col items-center justify-center">
                                     <span class="text-sm">CONTACT_ME</span>
@@ -212,9 +210,9 @@
                 </div>
 
                 <div class="cyber-box box-alliance hover-glow-cyan p-4 flex flex-col group relative overflow-hidden aspect-square">
-                    <div class="text-cyber-cyan font-orbitron text-xs flex flex-wrap items-center justify-between border-b border-cyber-cyan/30 pb-2 mb-3 z-10 relative gap-x-2 gap-y-1">
-                        <span class="font-bold">PARTNERS_NET</span>
-                        <span class="font-mono text-[10px] opacity-80 font-normal">// 合作夥伴</span>
+                    <div class="text-cyber-cyan font-orbitron text-xs flex flex-nowrap items-center justify-between border-b border-cyber-cyan/30 pb-2 mb-3 z-10 relative gap-2">
+                        <span class="font-bold truncate">PARTNERS_NET</span>
+                        <span class="font-mono text-[10px] opacity-80 font-normal shrink-0">// 合作夥伴</span>
                     </div>
                     <div id="alliance-slider" class="flex-1 w-full overflow-hidden relative z-0 rounded border border-cyber-gray bg-cyber-black">
                     </div>
@@ -226,14 +224,15 @@
                 
                 <!-- YouTube 最新影片 -->
                 <div id="yt-carousel-wrapper" class="cyber-box box-youtube hover-glow-cyan p-4 sm:p-5 flex flex-col group overflow-hidden min-h-[300px]">
-                    <div class="flex flex-wrap sm:flex-nowrap items-center justify-between border-b border-cyber-cyan/40 pb-3 mb-4 gap-3">
-                        <div class="flex flex-wrap items-center gap-x-2 gap-y-1 flex-1 min-w-0 pr-2">
+                    <!-- 修復 2：全面強制 flex-nowrap，按鈕鎖死最右邊，標題支援 truncate 截斷 -->
+                    <div class="flex flex-nowrap items-center justify-between border-b border-cyber-cyan/40 pb-3 mb-4 gap-2">
+                        <div class="flex items-center gap-x-2 flex-1 min-w-0 pr-2">
                             <svg class="w-4 h-4 sm:w-5 sm:h-5 fill-current text-red-500 shrink-0" viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg>
                             <span class="text-cyber-cyan font-orbitron text-xs sm:text-sm font-bold tracking-wider truncate">LATEST_TRANSMISSIONS</span>
-                            <span class="font-mono text-[10px] text-gray-300 opacity-90 shrink-0">// 最新作品</span>
+                            <span class="font-mono text-[9px] sm:text-[10px] text-gray-300 opacity-90 shrink-0 hidden sm:inline">// 最新作品</span>
                             <span id="yt-status" class="text-cyber-yellow text-[9px] sm:text-[10px] animate-pulse font-bold ml-1 shrink-0">FETCHING...</span>
                         </div>
-                        <div class="flex gap-2 shrink-0">
+                        <div class="flex gap-1.5 sm:gap-2 shrink-0 ml-auto">
                             <button onclick="scrollCarousel(-1)" class="w-8 h-8 sm:w-9 sm:h-9 bg-cyber-black border border-cyber-cyan text-cyber-cyan flex items-center justify-center hover:bg-cyber-cyan hover:text-black transition-colors"><i class="fa-solid fa-chevron-left text-sm"></i></button>
                             <button onclick="scrollCarousel(1)" class="w-8 h-8 sm:w-9 sm:h-9 bg-cyber-black border border-cyber-cyan text-cyber-cyan flex items-center justify-center hover:bg-cyber-cyan hover:text-black transition-colors"><i class="fa-solid fa-chevron-right text-sm"></i></button>
                         </div>
@@ -248,9 +247,9 @@
 
                 <!-- 社群網絡 -->
                 <div class="cyber-box box-comms hover-glow-purple p-5 flex flex-col justify-center group h-36">
-                    <div class="text-cyber-purple font-orbitron text-sm flex flex-wrap items-center justify-between border-b border-cyber-purple/40 pb-3 mb-4 gap-x-2 gap-y-1">
-                        <span class="font-bold tracking-wider">COMMS_LINK</span>
-                        <span class="font-mono text-[10px] opacity-80 text-gray-300 font-normal">// 通訊連線</span>
+                    <div class="text-cyber-purple font-orbitron text-sm flex flex-nowrap items-center justify-between border-b border-cyber-purple/40 pb-3 mb-4 gap-2">
+                        <span class="font-bold tracking-wider truncate">COMMS_LINK</span>
+                        <span class="font-mono text-[10px] opacity-80 text-gray-300 font-normal shrink-0">// 通訊連線</span>
                     </div>
                     <div class="flex flex-row gap-4 sm:gap-6 items-center justify-center h-full relative z-50">
                         <a href="https://www.facebook.com/HsiaoTzuOWO" target="_blank" class="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center rounded-full border-2 border-cyber-gray hover:border-cyber-purple hover:text-cyber-purple transition-all bg-cyber-dark hover:scale-110">
@@ -278,11 +277,11 @@
                         <div class="corner-br" style="background-color: #ff003c;"></div>
                     </div>
                     <div class="cyber-box hover-glow-cyan p-5 flex flex-col justify-between group cursor-pointer h-36">
-                        <div class="text-cyber-cyan font-orbitron text-sm flex flex-wrap justify-between items-center gap-x-2 gap-y-1">
-                            <span class="font-bold tracking-wider">ARCHIVE</span> 
-                            <i class="fa-solid fa-folder-tree text-lg"></i>
-                            <span class="font-mono text-xs text-cyber-cyan/80 mt-1 w-full">// 系統日誌</span>
+                        <div class="text-cyber-cyan font-orbitron text-sm flex flex-nowrap justify-between items-center gap-2">
+                            <span class="font-bold tracking-wider truncate">ARCHIVE</span> 
+                            <i class="fa-solid fa-folder-tree text-lg shrink-0"></i>
                         </div>
+                        <span class="font-mono text-xs text-cyber-cyan/80 mt-1 truncate">// 系統日誌</span>
                         <div class="text-sm text-white font-bold group-hover:pl-2 transition-all flex flex-col mt-2">
                             <span>> Read Logs</span>
                         </div>
@@ -294,10 +293,11 @@
                 <div class="cyber-box box-current hover-glow-yellow p-4 sm:p-5 lg:p-7 flex flex-col group relative min-h-min overflow-hidden">
                     <div class="mb-2">
                         <div class="flex flex-wrap sm:flex-nowrap items-center justify-between border-b border-cyber-yellow/40 pb-3 mb-4 gap-3">
-                            <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
-                                <i class="fa-solid fa-bolt text-lg text-cyber-yellow"></i>
-                                <span class="text-cyber-yellow font-orbitron text-sm sm:text-base font-bold">CO-OP & SPONSOR</span>
-                                <span class="font-mono text-xs text-gray-300 font-normal">// 合作產品</span>
+                            <div class="flex flex-wrap items-center gap-x-2 gap-y-1 flex-1 pr-2">
+                                <i class="fa-solid fa-bolt text-lg text-cyber-yellow shrink-0"></i>
+                                <!-- 移除 truncate，讓文字自然換行顯示完整 -->
+                                <span class="text-cyber-yellow font-orbitron text-sm sm:text-base font-bold break-all sm:break-normal">CO-OP & SPONSOR</span>
+                                <span class="font-mono text-xs text-gray-300 font-normal shrink-0">// 合作產品</span>
                             </div>
                             <div class="flex gap-2 shrink-0">
                                 <button onclick="changePage('current', -1)" class="w-8 h-8 sm:w-9 sm:h-9 bg-cyber-black border border-cyber-yellow text-cyber-yellow flex items-center justify-center hover:bg-cyber-yellow hover:text-black transition-colors"><i class="fa-solid fa-chevron-left text-sm"></i></button>
@@ -310,17 +310,18 @@
 
                     <details class="group/details border border-cyber-gray/60 bg-cyber-dark/80 mt-5 open:bg-cyber-dark transition-all duration-300">
                         <summary class="p-4 text-cyber-yellow font-orbitron text-sm flex justify-between items-center hover:bg-cyber-gray/40 transition cursor-pointer select-none">
-                            <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
-                                <i class="fa-solid fa-box-archive text-lg"></i> 
-                                <span class="font-bold tracking-wider">PAST_ARCHIVES</span>
-                                <span class="font-mono text-xs text-gray-400 font-normal tracking-normal">// 過往合作紀錄</span>
+                            <div class="flex items-center gap-x-2 flex-1 min-w-0 pr-2">
+                                <i class="fa-solid fa-box-archive text-sm sm:text-lg shrink-0"></i> 
+                                <span class="font-bold tracking-wider truncate text-xs sm:text-sm">PAST_ARCHIVES</span>
+                                <span class="font-mono text-[9px] sm:text-xs text-gray-400 font-normal tracking-normal shrink-0 hidden sm:inline">// 過往紀錄</span>
                             </div>
                             <i class="fa-solid fa-chevron-down transition-transform duration-300 group-open/details:rotate-180 text-lg shrink-0 ml-2"></i>
                         </summary>
                         <div class="p-4 border-t border-cyber-gray/60 cursor-default bg-cyber-black">
-                            <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-cyber-gray/50 pb-3 mb-4 gap-3">
-                                <div id="collab-tabs" class="flex gap-2 overflow-x-auto scrollbar-hide flex-1 pb-1 sm:pb-0"></div>
-                                <div class="flex gap-2 shrink-0 self-end sm:self-auto">
+                            <!-- 強制 flex-nowrap，翻頁按鈕永遠在右 -->
+                            <div class="flex flex-nowrap items-center justify-between border-b border-cyber-gray/50 pb-3 mb-4 gap-3">
+                                <div id="collab-tabs" class="flex gap-2 overflow-x-auto scrollbar-hide flex-1"></div>
+                                <div class="flex gap-1.5 sm:gap-2 shrink-0 ml-auto">
                                     <button onclick="changePage('past', -1)" class="w-8 h-8 sm:w-9 sm:h-9 bg-cyber-black border border-cyber-yellow text-cyber-yellow flex items-center justify-center hover:bg-cyber-yellow hover:text-black transition-colors"><i class="fa-solid fa-chevron-left text-sm"></i></button>
                                     <button onclick="changePage('past', 1)" class="w-8 h-8 sm:w-9 sm:h-9 bg-cyber-black border border-cyber-yellow text-cyber-yellow flex items-center justify-center hover:bg-cyber-yellow hover:text-black transition-colors"><i class="fa-solid fa-chevron-right text-sm"></i></button>
                                 </div>
@@ -402,7 +403,6 @@
             });
         }
 
-        // 郵件點擊處理：手機跳轉，電腦複製
         function handleMailClick(event) {
             const isMobile = window.innerWidth <= 768 || ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
             const email = 'HsiaoTzuOWO@gmail.com';
@@ -452,7 +452,7 @@
             
             years.forEach(year => {
                 const btn = document.createElement('button');
-                btn.className = `px-3 py-1 text-sm font-orbitron border-2 transition-colors font-bold ${year === currentPastYear ? 'bg-cyber-yellow text-cyber-black border-cyber-yellow' : 'bg-transparent text-gray-400 border-cyber-gray hover:text-cyber-yellow hover:border-cyber-yellow'}`;
+                btn.className = `px-3 py-1 text-sm font-orbitron border-2 transition-colors font-bold shrink-0 ${year === currentPastYear ? 'bg-cyber-yellow text-cyber-black border-cyber-yellow' : 'bg-transparent text-gray-400 border-cyber-gray hover:text-cyber-yellow hover:border-cyber-yellow'}`;
                 btn.innerText = year;
                 btn.onclick = (e) => { 
                     e.preventDefault(); 
@@ -489,7 +489,7 @@
                     <div class="absolute top-0 left-0 bg-cyber-dark/95 px-1.5 py-0.5 text-[9px] text-cyber-cyan border-b border-r border-cyber-cyan/60 font-orbitron font-bold tracking-wider">${item.type}</div>
                 </div>
                 <div class="p-3 flex flex-col flex-1 min-w-0 justify-center">
-                    <div class="flex-grow flex flex-col justify-center ${isDescEmpty ? 'pb-1' : ''}">
+                    <div class="flex-grow flex flex-col justify-center ${isDescEmpty ? 'pb-1' : ''} overflow-hidden">
                         <h4 class="${titleClass}">${item.name}</h4>
                         ${descHTML}
                     </div>
@@ -662,7 +662,6 @@
                 
                 pageData.forEach(img => {
                     const imgDiv = document.createElement('div');
-                    // 移除 pointer-events-none，否則防盜機制加上後會無法觸發 hover
                     imgDiv.className = 'bg-cyber-black flex items-center justify-center p-4 relative group/brand overflow-hidden';
                     imgDiv.innerHTML = `<img src="${img}" class="w-full h-full object-contain group-hover/brand:scale-110 transition duration-500">`;
                     pageDiv.appendChild(imgDiv);
@@ -735,29 +734,26 @@
 
         /* ================= 8. 系統安全機制 (防盜圖與防偷窺) ================= */
         function initSecurityProtocols() {
-            // 警告彈窗邏輯
             const showCyberWarning = (msg) => {
                 const existing = document.getElementById('cyber-warning');
                 if(existing) existing.remove();
                 const notice = document.createElement('div');
                 notice.id = 'cyber-warning';
                 notice.innerText = msg;
-                notice.className = 'fixed top-20 left-1/2 -translate-x-1/2 bg-cyber-pink text-white font-orbitron font-bold text-sm sm:text-base px-6 py-3 z-[9999] animate-pulse rounded shadow-[0_0_20px_#ff003c] tracking-wider border border-white/50 backdrop-blur-sm pointer-events-none';
+                notice.className = 'fixed top-20 left-1/2 -translate-x-1/2 bg-cyber-pink text-white font-orbitron font-bold text-sm sm:text-base px-6 py-3 z-[9999] animate-pulse rounded shadow-[0_0_20px_#ff003c] tracking-wider border border-white/50 backdrop-blur-sm pointer-events-none whitespace-nowrap';
                 document.body.appendChild(notice);
                 setTimeout(() => notice.remove(), 2500);
             };
 
-            // 封鎖滑鼠右鍵與手機長按選單
             document.addEventListener('contextmenu', event => {
                 event.preventDefault();
                 showCyberWarning('SYSTEM SECURED: RIGHT-CLICK DISABLED');
             });
 
-            // 封鎖常見的開發者工具與儲存快捷鍵 (F12, Ctrl+Shift+I, Ctrl+U, Ctrl+S)
             document.addEventListener('keydown', event => {
-                if (event.keyCode === 123 || // F12
-                    (event.ctrlKey && event.shiftKey && (event.keyCode === 73 || event.keyCode === 74)) || // Ctrl+Shift+I / J
-                    (event.ctrlKey && (event.keyCode === 85 || event.keyCode === 83))) { // Ctrl+U / Ctrl+S
+                if (event.keyCode === 123 || 
+                    (event.ctrlKey && event.shiftKey && (event.keyCode === 73 || event.keyCode === 74)) || 
+                    (event.ctrlKey && (event.keyCode === 85 || event.keyCode === 83))) { 
                     event.preventDefault();
                     showCyberWarning('ACCESS DENIED: PROTOCOL LOCKED');
                 }
@@ -776,7 +772,7 @@
             fetchYouTubeFeed(); 
             initAllianceSlider();
             initGlobalAutoPlay();
-            initSecurityProtocols(); // 啟動安全防護
+            initSecurityProtocols();
         });
     </script>
 </body>
