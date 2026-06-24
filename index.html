@@ -224,15 +224,18 @@
                 
                 <!-- YouTube 最新影片 -->
                 <div id="yt-carousel-wrapper" class="cyber-box box-youtube hover-glow-cyan p-4 sm:p-5 flex flex-col group overflow-hidden min-h-[300px]">
-                    <!-- 修復 2：全面強制 flex-nowrap，按鈕鎖死最右邊，標題支援 truncate 截斷 -->
-                    <div class="flex flex-nowrap items-center justify-between border-b border-cyber-cyan/40 pb-3 mb-4 gap-2">
-                        <div class="flex items-center gap-x-2 flex-1 min-w-0 pr-2">
+                    <!-- 移除 truncate，允許在極小螢幕下換行或縮小 -->
+                    <div class="flex flex-wrap sm:flex-nowrap items-start sm:items-center justify-between border-b border-cyber-cyan/40 pb-3 mb-4 gap-3">
+                        <div class="flex flex-wrap items-center gap-x-2 gap-y-1 flex-1 pr-2">
                             <svg class="w-4 h-4 sm:w-5 sm:h-5 fill-current text-red-500 shrink-0" viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg>
-                            <span class="text-cyber-cyan font-orbitron text-xs sm:text-sm font-bold tracking-wider truncate">LATEST_TRANSMISSIONS</span>
-                            <span class="font-mono text-[9px] sm:text-[10px] text-gray-300 opacity-90 shrink-0 hidden sm:inline">// 最新作品</span>
-                            <span id="yt-status" class="text-cyber-yellow text-[9px] sm:text-[10px] animate-pulse font-bold ml-1 shrink-0">FETCHING...</span>
+                            <!-- 將文字縮小並允許換行，徹底解決點點點問題 -->
+                            <span class="text-cyber-cyan font-orbitron text-[11px] sm:text-sm font-bold tracking-widest break-words">LATEST_TRANSMISSIONS</span>
+                            <div class="flex items-center gap-2 w-full sm:w-auto mt-1 sm:mt-0">
+                                <span class="font-mono text-[9px] sm:text-[10px] text-gray-300 opacity-90 shrink-0">// 最新作品</span>
+                                <span id="yt-status" class="text-cyber-yellow text-[9px] sm:text-[10px] animate-pulse font-bold shrink-0">FETCHING...</span>
+                            </div>
                         </div>
-                        <div class="flex gap-1.5 sm:gap-2 shrink-0 ml-auto">
+                        <div class="flex gap-1.5 sm:gap-2 shrink-0 ml-auto self-start sm:self-auto">
                             <button onclick="scrollCarousel(-1)" class="w-8 h-8 sm:w-9 sm:h-9 bg-cyber-black border border-cyber-cyan text-cyber-cyan flex items-center justify-center hover:bg-cyber-cyan hover:text-black transition-colors"><i class="fa-solid fa-chevron-left text-sm"></i></button>
                             <button onclick="scrollCarousel(1)" class="w-8 h-8 sm:w-9 sm:h-9 bg-cyber-black border border-cyber-cyan text-cyber-cyan flex items-center justify-center hover:bg-cyber-cyan hover:text-black transition-colors"><i class="fa-solid fa-chevron-right text-sm"></i></button>
                         </div>
@@ -292,14 +295,14 @@
                 <!-- 合作內容區塊 -->
                 <div class="cyber-box box-current hover-glow-yellow p-4 sm:p-5 lg:p-7 flex flex-col group relative min-h-min overflow-hidden">
                     <div class="mb-2">
-                        <div class="flex flex-wrap sm:flex-nowrap items-center justify-between border-b border-cyber-yellow/40 pb-3 mb-4 gap-3">
+                        <!-- 移除 min-w-0 與 truncate -->
+                        <div class="flex flex-wrap sm:flex-nowrap items-start sm:items-center justify-between border-b border-cyber-yellow/40 pb-3 mb-4 gap-3">
                             <div class="flex flex-wrap items-center gap-x-2 gap-y-1 flex-1 pr-2">
-                                <i class="fa-solid fa-bolt text-lg text-cyber-yellow shrink-0"></i>
-                                <!-- 移除 truncate，讓文字自然換行顯示完整 -->
-                                <span class="text-cyber-yellow font-orbitron text-sm sm:text-base font-bold break-all sm:break-normal">CO-OP & SPONSOR</span>
-                                <span class="font-mono text-xs text-gray-300 font-normal shrink-0">// 合作產品</span>
+                                <i class="fa-solid fa-bolt text-sm sm:text-lg text-cyber-yellow shrink-0"></i>
+                                <span class="text-cyber-yellow font-orbitron text-[11px] sm:text-base font-bold break-words">CO-OP & SPONSOR</span>
+                                <span class="font-mono text-[9px] sm:text-xs text-gray-300 font-normal shrink-0 w-full sm:w-auto mt-1 sm:mt-0">// 合作產品</span>
                             </div>
-                            <div class="flex gap-2 shrink-0">
+                            <div class="flex gap-1.5 sm:gap-2 shrink-0 ml-auto self-start sm:self-auto">
                                 <button onclick="changePage('current', -1)" class="w-8 h-8 sm:w-9 sm:h-9 bg-cyber-black border border-cyber-yellow text-cyber-yellow flex items-center justify-center hover:bg-cyber-yellow hover:text-black transition-colors"><i class="fa-solid fa-chevron-left text-sm"></i></button>
                                 <button onclick="changePage('current', 1)" class="w-8 h-8 sm:w-9 sm:h-9 bg-cyber-black border border-cyber-yellow text-cyber-yellow flex items-center justify-center hover:bg-cyber-yellow hover:text-black transition-colors"><i class="fa-solid fa-chevron-right text-sm"></i></button>
                             </div>
@@ -310,9 +313,9 @@
 
                     <details class="group/details border border-cyber-gray/60 bg-cyber-dark/80 mt-5 open:bg-cyber-dark transition-all duration-300">
                         <summary class="p-4 text-cyber-yellow font-orbitron text-sm flex justify-between items-center hover:bg-cyber-gray/40 transition cursor-pointer select-none">
-                            <div class="flex items-center gap-x-2 flex-1 min-w-0 pr-2">
+                            <div class="flex items-center gap-x-2 flex-1 pr-2">
                                 <i class="fa-solid fa-box-archive text-sm sm:text-lg shrink-0"></i> 
-                                <span class="font-bold tracking-wider truncate text-xs sm:text-sm">PAST_ARCHIVES</span>
+                                <span class="font-bold tracking-wider text-[11px] sm:text-sm break-words">PAST_ARCHIVES</span>
                                 <span class="font-mono text-[9px] sm:text-xs text-gray-400 font-normal tracking-normal shrink-0 hidden sm:inline">// 過往紀錄</span>
                             </div>
                             <i class="fa-solid fa-chevron-down transition-transform duration-300 group-open/details:rotate-180 text-lg shrink-0 ml-2"></i>
