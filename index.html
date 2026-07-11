@@ -4,6 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HsiaoTzuOWO個人形象站 | NEO_CREATOR</title>
+    
+    <!-- ====================================================================
+         Google Analytics (GA4) 追蹤代碼 (請將 G-YOUR_MEASUREMENT_ID 換成你的 ID)
+         ==================================================================== -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RZM6FDH8TD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      // 追蹤基本網頁流量
+      gtag('config', 'G-RZM6FDH8TD');
+    </script>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -513,6 +527,10 @@
             const card = document.createElement('a');
             card.href = item.link;
             card.className = "flex flex-row bg-cyber-gray/40 border border-cyber-gray/80 hover:border-cyber-cyan transition h-[120px] group overflow-hidden w-full";
+            
+            // 加入 onclick 事件發送 GA4 custom event
+            card.setAttribute('onclick', `trackProductClick('${item.name.replace(/'/g, "\\'")}', '${item.type}')`);
+
             card.innerHTML = `
                 <div class="w-[100px] sm:w-[120px] flex-shrink-0 relative border-r border-cyber-gray/80 bg-cyber-black overflow-hidden">
                     <img src="${item.image}" ${fallbackImg} class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition duration-500">
@@ -529,6 +547,19 @@
                 </div>
             `;
             return card;
+        }
+
+        // ====================================================================
+        // GA4 追蹤產品點擊事件
+        // ====================================================================
+        function trackProductClick(productName, productType) {
+            if(typeof gtag === 'function') {
+                gtag('event', 'click_product', {
+                    'event_category': 'Collab Product',
+                    'event_label': productName,
+                    'product_type': productType
+                });
+            }
         }
 
         function createEmptySlotCard() {
