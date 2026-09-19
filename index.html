@@ -5,23 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HsiaoTzuOWO個人形象站 | NEO_CREATOR</title>
 
-    <!-- ====================================================================
-         網站圖示 (Favicon) 設定 - 加上版本號防快取
-         ==================================================================== -->
+    <!-- 網站圖示 (Favicon) 設定 -->
     <link rel="icon" type="image/png" href="./favicon.png?v=1.0">
     <link rel="apple-touch-icon" href="./favicon.png?v=1.0">
     
-    <!-- ====================================================================
-         Google Analytics (GA4) 追蹤代碼
-         Google Analytics (GA4) 追蹤代碼 (請將 G-YOUR_MEASUREMENT_ID 換成你的 ID)
-         ==================================================================== -->
+    <!-- Google Analytics (GA4) 追蹤代碼 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RZM6FDH8TD"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
-      // 追蹤基本網頁流量
       gtag('config', 'G-RZM6FDH8TD');
     </script>
     
@@ -92,9 +85,6 @@
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* ====================================================================
-           系統防護：終極圖片防盜機制 (禁止拖曳、禁止反白、防 iOS 長按存圖)
-           ==================================================================== */
         img {
             -webkit-user-drag: none;
             -khtml-user-drag: none;
@@ -110,7 +100,6 @@
             -webkit-touch-callout: none;
         }
 
-        /* 排版系統：合作內容網格 */
         .collab-grid {
             display: grid;
             grid-template-columns: repeat(1, minmax(0, 1fr));
@@ -126,7 +115,6 @@
             }
         }
 
-        /* 佈局系統 */
         .layout-wrapper { display: flex; flex-direction: column; gap: 1.25rem; transition: max-width 0.5s ease; }
         .layout-aside, .layout-main { display: contents; }
         
@@ -197,11 +185,10 @@
         <main class="layout-wrapper">
             
             <aside class="layout-aside">
-                <!-- 個人介紹區塊 -->
                 <div class="cyber-box p-1 box-intro">
                     <div class="relative overflow-hidden border-b border-cyber-cyan intro-avatar transition-all duration-300 group/avatar">
                         <img src="./images/頭貼.jpg" alt="Profile" class="w-full h-full object-cover filter contrast-125 saturate-50 group-hover/avatar:saturate-150 transition duration-500">
-                        <div class="absolute bottom-2 right-2 bg-cyber-cyan text-cyber-black text-[10px] font-bold px-2 py-0.5 font-orbitron hidden lg:block">IG 3.3K</div>
+                        <div class="absolute bottom-2 right-2 bg-cyber-cyan text-cyber-black text-[10px] font-bold px-2 py-0.5 font-orbitron hidden lg:block">IG 35K</div>
                     </div>
                     
                     <div class="p-4 intro-text">
@@ -242,7 +229,6 @@
 
             <section class="layout-main">
                 
-                <!-- YouTube 最新影片 -->
                 <div id="yt-carousel-wrapper" class="cyber-box box-youtube hover-glow-cyan p-4 sm:p-5 flex flex-col group overflow-hidden min-h-[300px]">
                     <div class="flex flex-wrap sm:flex-nowrap items-start sm:items-center justify-between border-b border-cyber-cyan/40 pb-3 mb-4 gap-3">
                         <div class="flex flex-wrap items-center gap-x-2 gap-y-1 flex-1 pr-2">
@@ -362,22 +348,28 @@
 
     <script>
         /* ================= 1. 載入動畫邏輯 ================= */
-        window.onload = () => {
-            const bar = document.getElementById('loading-bar');
-            setTimeout(() => { bar.style.width = '100%'; }, 100);
-
-            setTimeout(() => {
-                const screen = document.getElementById('loading-screen');
-                const app = document.getElementById('app-wrapper');
-                
+        // 將載入移除機制安全包裹，防止任何腳本錯誤卡死畫面
+        function removeLoadingScreen() {
+            const screen = document.getElementById('loading-screen');
+            const app = document.getElementById('app-wrapper');
+            if (screen) {
                 screen.style.transform = 'scale(1.5)';
                 screen.style.opacity = '0';
                 screen.style.pointerEvents = 'none';
-                
-                app.style.opacity = '1';
-                setTimeout(() => { screen.remove(); }, 800);
-            }, 2100);
+                setTimeout(() => screen.remove(), 800);
+            }
+            if (app) app.style.opacity = '1';
+        }
+
+        window.onload = () => {
+            const bar = document.getElementById('loading-bar');
+            if (bar) setTimeout(() => { bar.style.width = '100%'; }, 100);
+            // 2.1 秒後必定移除 Loading
+            setTimeout(removeLoadingScreen, 2100);
         };
+
+        // 雙重保險：如果 window.onload 因為某些原因沒觸發，3秒後也強制移除
+        setTimeout(removeLoadingScreen, 3000);
 
         /* ================= 2. 設備切換邏輯 ================= */
         const btnMobile = document.getElementById('btn-mobile');
@@ -456,7 +448,7 @@
                 { type: "PRODUCT", name: "G316 X 98 8k", desc: "", image: "./images/Cooperation/G316X.png", promoCode: null, link: "https://qrco.de/bguVUW" },
                 { type: "PRODUCT", name: "EGO MagPower6", desc: " ", image: "./images/Cooperation/MagPower6.png", promoCode: null, link: "https://speff.cc/97cxsm" },
                 { type: "PRODUCT", name: "CORSAIR VANGUARD AIR 99", desc: " ", image: "./images/Cooperation/vgair99.png", promoCode: null, link: "https://www.corsair.com/tw/zh/p/keyboards/ch-91ha01b-na/vanguard-air-99-wireless-optical-mechanical-gaming-keyboard-black-ch-91ha01b-na" },
-                { type: "GEAR", name: "海盜船 618 年中狂歡節掛", desc: "終身訂閱 8 折優惠", image: "https://placehold.co/400x400/1a1a24/ff003c?text=SOFTWARE", promoCode: null, link: "https://forms.gle/TNQ4ftUPGQaKK44P7" },
+                { type: "GEAR", name: "海盜船 618 年中狂歡節", desc: "終身訂閱 8 折優惠", image: "https://placehold.co/400x400/1a1a24/ff003c?text=SOFTWARE", promoCode: null, link: "https://forms.gle/TNQ4ftUPGQaKK44P7" },
                 { type: "PRODUCT", name: "ROG GR70", desc: "", image: "./images/Cooperation/GR70.png", promoCode: null, link: "https://rog.asus.com/tw/desktops/mini-pc/rog-gr70" },
                 { type: "PRODUCT", name: "ROG Strix Morph 96", desc: "全台正式通路購買，就送千元鼠墊+ROG熱昇華鍵帽組", image: "./images/Cooperation/Morph96.png", promoCode: null, link: "https://tw.rog.gg/Morph96WL" },
                 { type: "PRODUCT", name: "eiP HyperKeys", desc: "", image: "./images/Cooperation/HyperKeys.png", promoCode: "HYPER", link: "https://eipstore.net/HsiaoTzuOWO" },
@@ -483,7 +475,7 @@
                 { type: "SOFTWARE", name: "‎Kuli Kuli", image: "https://placehold.co/400x400/1a1a24/ff003c?text=Kuli Kuli", desc: "App Store", promoCode: null, link: "https://apps.apple.com/tw/app/kuli-kuli-ai%E8%8F%9C%E5%96%AE%E8%97%A5%E5%A6%9D%E7%BF%BB%E8%AD%AF%E5%B0%88%E5%AE%B6/id6458146511" },
                 { type: "SOFTWARE", name: "‎Kuli Kuli", image: "https://placehold.co/400x400/1a1a24/ff003c?text=Kuli Kuli", desc: "Google Play", promoCode: null, link: "https://play.google.com/store/apps/details?id=io.iftech.bistrobridge&hl=zh_TW" },
                 { type: "PRODUCT", name: "Hollyland Lyra", image: "./images/Past collaborations/2025/HollylandLyra.png", desc: " ", promoCode: null, link: "https://www.hollyland.com/product/lyra" },
-                { type: "PRODUCT", name: "GravaStar Mercury V75", image: "./images/Past collaborations/2025/MercuryV75.png", desc: "優惠馬即享300元折扣", promoCode: "OWO300", link: "https://zoeao.com.tw/bYmYX" },
+                { type: "PRODUCT", name: "GravaStar Mercury V75", image: "./images/Past collaborations/2025/MercuryV75.png", desc: "優惠碼即享300元折扣", promoCode: "OWO300", link: "https://zoeao.com.tw/bYmYX" },
                 { type: "PRODUCT", name: "Bteam Mobiblades", image: "./images/Past collaborations/2025/BteamMobiblades.png", desc: "莫比手機遊戲手把", promoCode: null, link: "https://bteam.tw/Mobix小子" },
                 { type: "PRODUCT", name: "Bteam Specter", image: "./images/Past collaborations/2025/BteamSpecter.png", desc: "沛影遊戲手把", promoCode: null, link: "https://bteam.tw/SPRx小子" },
                 { type: "PRODUCT", name: "MSI MEG Ai1600T PCIE5", image: "./images/Past collaborations/2025/MEG Ai1600T PCIE5.png", desc: " ", promoCode: null, link: "https://tw.msi.com/Power-Supply/MEG-Ai1600T-PCIE5" },
@@ -545,8 +537,8 @@
             card.href = item.link;
             card.className = "flex flex-row bg-cyber-gray/40 border border-cyber-gray/80 hover:border-cyber-cyan transition h-[120px] group overflow-hidden w-full";
             
-            // 加入 onclick 事件發送 GA4 custom event
-            card.setAttribute('onclick', `trackProductClick('${item.name.replace(/'/g, "\\'")}', '${item.type}')`);
+            // 加入 onclick 事件發送 GA4 custom event，透過 encodeURIComponent 避免單引號與跳脫字元導致的語法錯誤
+            card.setAttribute('onclick', `trackProductClick('${encodeURIComponent(item.name)}', '${item.type}')`);
 
             card.innerHTML = `
                 <div class="w-[100px] sm:w-[120px] flex-shrink-0 relative border-r border-cyber-gray/80 bg-cyber-black overflow-hidden">
@@ -569,13 +561,19 @@
         // ====================================================================
         // GA4 追蹤產品點擊事件
         // ====================================================================
-        function trackProductClick(productName, productType) {
-            if(typeof gtag === 'function') {
-                gtag('event', 'click_product', {
-                    'event_category': 'Collab Product',
-                    'event_label': productName,
-                    'product_type': productType
-                });
+        function trackProductClick(encodedName, productType) {
+            try {
+                // 將編碼過的名稱還原，確保傳送給 GA4 的名稱是正確的
+                const productName = decodeURIComponent(encodedName);
+                if(typeof gtag === 'function') {
+                    gtag('event', 'click_product', {
+                        'event_category': 'Collab Product',
+                        'event_label': productName,
+                        'product_type': productType
+                    });
+                }
+            } catch (e) {
+                console.error('Analytics tracking error', e);
             }
         }
 
@@ -642,7 +640,7 @@
             });
         }
 
-        /* ================= 5. YouTube API ================= */
+        /* ================= 5. YouTube API (雙引擎穩定版) ================= */
         const carousel = document.getElementById('yt-carousel');
         function scrollCarousel(direction) {
             carousel.scrollBy({ left: direction * (carousel.clientWidth * 0.7), behavior: 'smooth' });
@@ -658,8 +656,12 @@
                 
                 card.className = `h-full shrink-0 snap-center relative block group border-2 border-cyber-gray hover:border-cyber-cyan transition-all overflow-hidden bg-cyber-black ${aspectClass}`;
 
+                // 如果是我們自己解析出來有 videoId 的，就使用高畫質 hqdefault 確保 Shorts 不破圖；否則用 API 給的
+                const imgSrc = video.videoId ? `https://i.ytimg.com/vi/${video.videoId}/hqdefault.jpg` : video.thumbnail;
+                const fallbackImg = `onerror="this.onerror=null;this.src='https://placehold.co/1920x1080/1a1a24/ffffff?text=NO+IMAGE';"`;
+
                 card.innerHTML = `
-                    <img src="${video.thumbnail}" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition duration-500">
+                    <img src="${imgSrc}" ${fallbackImg} class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition duration-500">
                     <div class="absolute bottom-0 left-0 w-full p-2 sm:p-3 bg-gradient-to-t from-black via-black/80 to-transparent pointer-events-none">
                         <div class="text-[9px] sm:text-[10px] text-cyber-cyan font-mono bg-black/70 inline-block px-1.5 py-0.5 mb-1 sm:mb-1.5 font-bold tracking-widest">${video.pubDate}</div>
                         <h3 class="font-orbitron font-bold text-xs sm:text-sm text-white group-hover:text-cyber-cyan line-clamp-2 leading-tight">${video.title}</h3>
@@ -674,23 +676,24 @@
             const CHANNEL_ID = "UCAldtdOCghMLl8c8MCBjN7g"; 
             const RSS_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
             
+            // 精準抓取 YouTube 影片代碼 (長度11碼)
             const extractVideoID = (url) => {
                 const match = url.match(/(?:v=|shorts\/|youtu\.be\/|\/v\/|embed\/)([\w-]{11})/);
                 return match ? match[1] : null;
             };
 
-            // 引擎 1：AllOrigins 解析器
+            // 引擎 1：解析原始 XML (解決第三方 API 頻率限制)
             const fetchViaAllOrigins = async () => {
                 const PROXY_URL = `https://api.allorigins.win/raw?url=${encodeURIComponent(RSS_URL)}`;
                 const response = await fetch(PROXY_URL);
-                if (!response.ok) throw new Error('AllOrigins Failed');
-                const xmlText = await response.text();
+                if (!response.ok) throw new Error('Primary API Failed');
                 
+                const xmlText = await response.text();
                 const parser = new DOMParser();
                 const xmlDoc = parser.parseFromString(xmlText, "text/xml");
                 const entries = Array.from(xmlDoc.querySelectorAll("entry")).slice(0, 5);
                 
-                if (entries.length === 0) throw new Error('No entries found via AllOrigins');
+                if (entries.length === 0) throw new Error('No videos found');
                 
                 return entries.map(entry => {
                     const title = entry.querySelector("title").textContent;
@@ -699,19 +702,19 @@
                     const pubDate = new Date(published).toISOString().split('T')[0];
                     const isShorts = title.toLowerCase().includes('#shorts');
                     const videoId = extractVideoID(link);
-                    const thumbnail = videoId ? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg` : '';
-                    return { title, link, pubDate, isShorts, thumbnail };
+                    
+                    return { title, link, pubDate, isShorts, videoId, thumbnail: '' };
                 });
             };
 
-            // 引擎 2：RSS2JSON 解析器
+            // 引擎 2：使用 RSS2JSON (備用方案)
             const fetchViaRss2Json = async () => {
                 const API_URL = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_URL)}`;
                 const response = await fetch(API_URL);
-                if (!response.ok) throw new Error('RSS2JSON Failed');
-                const data = await response.json();
+                if (!response.ok) throw new Error('Secondary API Failed');
                 
-                if (data.status !== 'ok' || !data.items || data.items.length === 0) throw new Error('No items found via RSS2JSON');
+                const data = await response.json();
+                if (data.status !== 'ok' || !data.items || data.items.length === 0) throw new Error('No items found');
                 
                 return data.items.slice(0, 5).map(item => {
                     const title = item.title;
@@ -719,19 +722,17 @@
                     const pubDate = item.pubDate.split(' ')[0];
                     const isShorts = title.toLowerCase().includes('#shorts');
                     const videoId = extractVideoID(link);
-                    const thumbnail = videoId ? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg` : item.thumbnail;
-                    return { title, link, pubDate, isShorts, thumbnail };
+                    
+                    return { title, link, pubDate, isShorts, videoId, thumbnail: item.thumbnail };
                 });
             };
 
             try {
                 let latestVideos;
                 try {
-                    // 優先啟動引擎 1
                     latestVideos = await fetchViaAllOrigins();
                 } catch (err) {
-                    console.warn('[NEO_OS] Primary API failed, switching to secondary...');
-                    // 如果引擎 1 失敗，啟動引擎 2 救援
+                    console.warn('[NEO_OS] Primary YouTube API failed, switching to secondary...', err);
                     latestVideos = await fetchViaRss2Json();
                 }
 
@@ -740,8 +741,7 @@
                 statusEl.classList.replace('text-cyber-yellow', 'text-cyber-cyan');
 
             } catch (error) {
-                // 只有在兩個引擎都陣亡的情況下，才會顯示這張截圖的紅色警告
-                console.warn('[NEO_OS] All APIs Blocked or Failed. Switching to local backup.');
+                console.warn('[NEO_OS] Both YouTube APIs failed. Using fallback data.', error);
                 statusEl.innerText = 'SYNC_BACKUP';
                 statusEl.classList.replace('text-cyber-yellow', 'text-cyber-pink');
                 
@@ -762,7 +762,7 @@
             "./images/Partners/thermaltake.svg", 
             "./images/Partners/logitechg.png",
             "./images/Partners/corsair.svg",  
-            "./images/Partners/Gravastar.png",
+            "./images/Partners/GravaStar.png",
             "./images/Partners/razer.svg", 
             "https://placehold.co/150x150/050505/050505?text=+" 
         ];
